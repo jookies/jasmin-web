@@ -26,15 +26,19 @@ include('classes/JasminConnector.php');
  *
  * $groupcon->delete();
  */
-class JasminGroupConnector extends JasminConnector
+class JasminGroup extends JasminConnector
 {
     var $gid = null;
     var $telnet;
 
     public function __construct()
     {
+
         $this->telnet = new TelnetConnector();
-        $this->telnet->connect('127.0.0.1', 8990, 'jcliadmin', 'jclipwd');
+        $this->telnet->connect($server = '127.0.0.1', $port = 8990, 'jcliadmin', 'jclipwd');
+
+        // for the newtelnetconnector
+        //$this->telnet->login('jcliadmin', 'jclipwd');
     }
 
     /**
@@ -59,7 +63,7 @@ class JasminGroupConnector extends JasminConnector
 
         } else
         {
-            throw new Exception('ConnectionNotAvailabe');
+            throw new Exception('ConnectionNotAvailable');
         }
 
         return $result;
@@ -77,9 +81,9 @@ class JasminGroupConnector extends JasminConnector
     {
         if (!empty($this->gid))
         {
-            $result = $this->telnet->doCommand('group -a');
-            $result .= $this->telnet->doCommand("gid " . $this->gid);
-            $result .= $this->telnet->doCommand("ok");
+            $this->telnet->doCommand('group -a');
+            $this->telnet->doCommand("gid " . $this->gid);
+            $result = $this->telnet->doCommand("ok");
 
             //echo $result;
         } else
@@ -87,7 +91,7 @@ class JasminGroupConnector extends JasminConnector
             throw new Exception('NullGIDException');
         }
 
-        return $result;
+        return trim($result);
     }
 
     /**

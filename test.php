@@ -18,13 +18,22 @@
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-include('classes/JasminGroupConnector.php');
+include('classes/JasminGroup.php');
+include('classes/JasminSmppc.php');
 
-$groupconn = new JasminGroupConnector();
+$groupconn = new JasminGroup();
 
 $groupconn->getgroups();
 
-$groupconn->gid = 'customers';
+$groupconn->gid = 'customers3';
 echo $groupconn->save();
 
-echo $groupconn->delete();
+
+
+$groupconn->gid = 'customers2';
+echo $groupconn->save();
+//$smppconn = new JasminSMPPClientConnector();
+
+//$smppconn->cid = 'test';
+//$smppconn->host = 'host_test';
+//$smppconn->save();
