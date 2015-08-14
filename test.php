@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +16,15 @@
  *
  */
 
-include('classes/TelnetConnector.php');
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+include('classes/JasminGroupConnector.php');
 
+$groupconn = new JasminGroupConnector();
 
-abstract class JasminConnector
-{
-    var $telnet;
+$groupconn->getgroups();
 
-    abstract public function save();
+$groupconn->gid = 'customers';
+echo $groupconn->save();
 
-}
+echo $groupconn->delete();
