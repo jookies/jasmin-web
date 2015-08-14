@@ -19,29 +19,13 @@ class TelnetConnector
 {
     var $sleeptime = 125000;
     var $loginsleeptime = 1000000;
-
+    var $global_buffer;
     var $fp = null;
     var $loginprompt;
 
-    var $conn1;
-    var $conn2;
-
     public function __construct()
     {
-        $this->conn1 = chr(0xFF) . chr(0xFB) . chr(0x1F) . chr(0xFF) . chr(0xFB) .
-            chr(0x20) . chr(0xFF) . chr(0xFB) . chr(0x18) . chr(0xFF) . chr(0xFB) .
-            chr(0x27) . chr(0xFF) . chr(0xFD) . chr(0x01) . chr(0xFF) . chr(0xFB) .
-            chr(0x03) . chr(0xFF) . chr(0xFD) . chr(0x03) . chr(0xFF) . chr(0xFC) .
-            chr(0x23) . chr(0xFF) . chr(0xFC) . chr(0x24) . chr(0xFF) . chr(0xFA) .
-            chr(0x1F) . chr(0x00) . chr(0x50) . chr(0x00) . chr(0x18) . chr(0xFF) .
-            chr(0xF0) . chr(0xFF) . chr(0xFA) . chr(0x20) . chr(0x00) . chr(0x33) .
-            chr(0x38) . chr(0x34) . chr(0x30) . chr(0x30) . chr(0x2C) . chr(0x33) .
-            chr(0x38) . chr(0x34) . chr(0x30) . chr(0x30) . chr(0xFF) . chr(0xF0) .
-            chr(0xFF) . chr(0xFA) . chr(0x27) . chr(0x00) . chr(0xFF) . chr(0xF0) .
-            chr(0xFF) . chr(0xFA) . chr(0x18) . chr(0x00) . chr(0x58) . chr(0x54) .
-            chr(0x45) . chr(0x52) . chr(0x4D) . chr(0xFF) . chr(0xF0);
-        $this->conn2 = chr(0xFF) . chr(0xFC) . chr(0x01) . chr(0xFF) . chr(0xFC) .
-            chr(0x22) . chr(0xFF) . chr(0xFE) . chr(0x05) . chr(0xFF) . chr(0xFC) . chr(0x21);
+
     }
 
     /**
@@ -57,7 +41,7 @@ class TelnetConnector
      */
     public function connect($server = '127.0.0.1', $port = 8990, $user = null, $pass = null)
     {
-        $neededphpvers = '5.1.0';
+        $neededphpvers = '5.3.0';
         if (version_compare(PHP_VERSION, $neededphpvers, '<'))
         {
             throw new Exception('LowPhpVersionException');
@@ -77,11 +61,7 @@ class TelnetConnector
 
         if ($this->fp = fsockopen($server, $port))
         {
-            fputs($this->fp, $this->conn1);
-            usleep($this->sleeptime);
 
-            fputs($this->fp, $this->conn2);
-            usleep($this->sleeptime);
             $response = $this->getResponse();
 
             $response = explode("\n", $response);
@@ -136,14 +116,16 @@ class TelnetConnector
      */
     public function doCommand($command)
     {
+        $command .= "\r";
+
         $response = null;
+
         if ($this->fp)
         {
-            fputs($this->fp, "$command\r\n");
+            fwrite($this->fp, $command);
+
             usleep($this->sleeptime);
             $response = $this->getResponse();
-
-            //$response = preg_replace("/^.*?\n(.*)\n[^\n]*$/", "<br/>", $response);
 
             return $response;
         }
@@ -161,7 +143,7 @@ class TelnetConnector
      */
     public function getResponse()
     {
-        $res = '';
+        /*$res = '';
         do
         {
             $res .= fread($this->fp, 1000);
@@ -169,5 +151,11 @@ class TelnetConnector
         } while ($s['unread_bytes']);
 
         return $res;
+*/
+        usleep($this->sleeptime);
+        $c = fread($this->fp, 8192);
+
+        return $c;
+
     }
 }

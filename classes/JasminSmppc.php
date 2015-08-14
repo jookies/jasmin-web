@@ -22,8 +22,7 @@
  * smppc.password = 'bar'
  * smppc.save()
  */
-
-class JasminSMPPClientConnector extends JasminConnector
+class JasminSmppc extends JasminConnector
 {
     var $cid;
     var $host;
@@ -69,12 +68,26 @@ class JasminSMPPClientConnector extends JasminConnector
     public function save()
     {
         $this->command = '';
+        $params = get_class_vars(__CLASS__);
+
+        foreach ($params as $p_key => $p_value)
+        {
+            echo $this->$$p_key;
+            $this->make_cmd($this->$$p_key, $p_value);
+        }
+        var_dump($params);
+        echo $this->cid;
+        echo $this->command;
+    }
+
+    public function delete()
+    {
 
     }
 
     private function make_cmd($key, $value)
     {
-        if (!empty($key))
+        if (!empty($value))
         {
             $this->command .= $key . ' ' . $value . '\r\n';
         }
