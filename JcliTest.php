@@ -10,14 +10,17 @@ class JcliTest extends PHPUnit_Framework_TestCase
 
         $groupconn = new JasminGroup();
 
-        //$groupconn->getgroups();
+        $groupconn->getAll();
 
-        $groupconn->gid = 'c1';
+        $groupconn->properties['gid'] = 'customers3';
+        $this->assertEquals('Successfully added Group [' . $groupconn->properties['gid'] . ']', $groupconn->save());
 
-        // Assert
-        //$this->assertEquals('> ok', $groupconn->save());
+        $groupconn->properties['gid'] = 'customers2';
+        $this->assertEquals('Successfully added Group [' . $groupconn->properties['gid'] . ']', $groupconn->save());
 
-        $this->assertEquals('Successfully added Group [' . $groupconn->gid . ']', $groupconn->save());
+
+        $groupconn->key = 'customers2';
+        $this->assertEquals('Successfully removed Group id:' . $groupconn->key, $groupconn->delete());
     }
 
     // ...

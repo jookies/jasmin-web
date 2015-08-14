@@ -17,7 +17,7 @@
  *
  */
 
-include('classes/NewTelnetConnector.php');
+//include('classes/NewTelnetConnector.php');
 include('classes/TelnetConnector.php');
 
 
@@ -25,6 +25,7 @@ abstract class JasminConnector
 {
     var $telnet;
 
+    abstract public function getAll();
     abstract public function save();
     abstract public function delete();
 }

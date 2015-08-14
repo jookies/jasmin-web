@@ -23,15 +23,17 @@ include('classes/JasminSmppc.php');
 
 $groupconn = new JasminGroup();
 
-$groupconn->getgroups();
+$groupconn->getAll();
 
-$groupconn->gid = 'customers3';
-echo $groupconn->save();
+$groupconn->properties['gid'] = 'customers3';
+$groupconn->save();
+
+$groupconn->properties['gid'] = 'customers2';
+$groupconn->save();
 
 
-
-$groupconn->gid = 'customers2';
-echo $groupconn->save();
+$groupconn->key = 'customers2';
+echo $groupconn->delete();
 //$smppconn = new JasminSMPPClientConnector();
 
 //$smppconn->cid = 'test';

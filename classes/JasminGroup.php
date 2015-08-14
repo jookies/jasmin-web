@@ -12,112 +12,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-include('classes/JasminConnector.php');
+include('classes/JasminObject.php');
 
 /**
- * Class JasminGroupConnector
+ * Class JasminGroup
  *
  * Usage:
- * $groupcon = new JasminGroupConnector();
- * $groupcon->gid = 'customers';
+ * $groupcon = new JasminGroup();
+ * $groupcon->properties['gid'] = 'customers';
  * $groupcon->save();
  *
  * or
  *
  * $groupcon->delete();
  */
-class JasminGroup extends JasminConnector
+class JasminGroup extends JasminObject
 {
-    var $gid = null;
-    var $telnet;
+    var $command = 'group';
+    var $key;
+    var $properties;
 
     public function __construct()
     {
-
-        $this->telnet = new TelnetConnector();
-        $this->telnet->connect($server = '127.0.0.1', $port = 8990, 'jcliadmin', 'jclipwd');
-
-        // for the newtelnetconnector
-        //$this->telnet->login('jcliadmin', 'jclipwd');
+        parent::__construct();
     }
 
-    /**
-     * getgroups()
-     *
-     * Get a string containing all the groups
-     *
-     * TODO: find a way to return an array with the group ids.
-     *
-     * @return null|string
-     * @throws Exception
-     */
-    public function getgroups()
-    {
-        if (!empty($this->telnet))
-        {
-            $result = $this->telnet->doCommand('group -l');
-            if (is_null($result))
-            {
-                throw new Exception('GroupConnectorFailed');
-            }
-
-        } else
-        {
-            throw new Exception('ConnectionNotAvailable');
-        }
-
-        return $result;
-    }
-
-    /**
-     * save()
-     *
-     * Saves the group id
-     *
-     * @return null|string
-     * @throws Exception
-     */
-    public function save()
-    {
-        if (!empty($this->gid))
-        {
-            $this->telnet->doCommand('group -a');
-            $this->telnet->doCommand("gid " . $this->gid);
-            $result = $this->telnet->doCommand("ok");
-
-            //echo $result;
-        } else
-        {
-            throw new Exception('NullGIDException');
-        }
-
-        return trim($result);
-    }
-
-    /**
-     * delete()
-     *
-     * Deletes the designated group id
-     *
-     * @return null|string
-     * @throws Exception
-     */
-    public function delete()
-    {
-        if (!empty($this->gid))
-        {
-            $result = $this->telnet->doCommand('group -r ' . $this->gid);
-        } else
-        {
-            throw new Exception('NullGIDException');
-        }
-
-        return $result;
-
-    }
-
-    public function __destruct()
-    {
-        $this->telnet->disconnect();
-    }
 }

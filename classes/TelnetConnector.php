@@ -23,15 +23,10 @@ class TelnetConnector
     var $fp = null;
     var $loginprompt;
 
-    public function __construct()
-    {
-
-    }
-
     /**
-     * connect()
+     * Constructor()
      *
-     * Connects to telnet server for jasmin.
+     * constructor for telnetconnector that connects to telnet server for jasmin.
      *
      * @param string $server
      * @param int $port
@@ -39,28 +34,23 @@ class TelnetConnector
      * @param null $pass
      * @throws Exception
      */
-    public function connect($server = '127.0.0.1', $port = 8990, $user = null, $pass = null)
+    public function __construct($server = '127.0.0.1', $port = 8990, $user = null, $pass = null)
     {
         $neededphpvers = '5.3.0';
-        if (version_compare(PHP_VERSION, $neededphpvers, '<'))
-        {
+        if (version_compare(PHP_VERSION, $neededphpvers, '<')) {
             throw new Exception('LowPhpVersionException');
         }
-        if (!is_int($port))
-        {
+        if (!is_int($port)) {
             throw new Exception('InvalidPortFormatException');
         }
-        if (!filter_var($server, FILTER_VALIDATE_IP))
-        {
+        if (!filter_var($server, FILTER_VALIDATE_IP)) {
             throw new Exception('InvalidServerIPFormatException');
         }
-        if (empty($user) || empty($pass))
-        {
+        if (empty($user) || empty($pass)) {
             throw new Exception('NullUserPassException');
         }
 
-        if ($this->fp = fsockopen($server, $port))
-        {
+        if ($this->fp = fsockopen($server, $port)) {
 
             $response = $this->getResponse();
 
@@ -76,12 +66,10 @@ class TelnetConnector
             $response = $this->getResponse();
             $response = explode("\n", $response);
 
-            if (($response[count($response) - 1] == '') || ($this->loginprompt == $response[count($response) - 1]))
-            {
+            if (($response[count($response) - 1] == '') || ($this->loginprompt == $response[count($response) - 1])) {
                 throw new Exception('LoginFailedException');
             }
-        } else
-        {
+        } else {
             throw new Exception('UnableToOpenConnectionException');
         }
     }
@@ -95,13 +83,11 @@ class TelnetConnector
      */
     public function disconnect()
     {
-        if ($this->fp)
-        {
+        if ($this->fp) {
             $this->doCommand('exit');
             fclose($this->fp);
             $this->fp = null;
-        } else
-        {
+        } else {
             throw new Exception('NoAvailableConnectionException');
         }
     }
@@ -120,12 +106,12 @@ class TelnetConnector
 
         $response = null;
 
-        if ($this->fp)
-        {
+        if ($this->fp) {
             fwrite($this->fp, $command);
 
             usleep($this->sleeptime);
             $response = $this->getResponse();
+            $this->global_buffer .= $response;
 
             return $response;
         }
@@ -136,8 +122,6 @@ class TelnetConnector
      * getResponse()
      *
      * Gets the response string from the server.
-     *
-     * TODO: find a better way to read the socket. socket_get_Status['unread_bytes'] should not be used like that.
      *
      * @return string
      */
