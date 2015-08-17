@@ -1,32 +1,15 @@
 <?php
-
 /**
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Class JasminSmppc
  *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- *
- * * smppc = SmppClientConnector()
- * smppc.cid = 'ConnectorID'
- * smppc.host = '127.0.0.1'
- * smppc.port = 2775
- * smppc.username = 'foo'
- * smppc.password = 'bar'
- * smppc.save()
+ * id property is the cid for that class
  */
 class JasminSmppc extends JasminObject
 {
-    var $key;
+    var $id;
     var $command = 'smppc';
-    var $properties = array(
+    var $properties;
+    /*var $properties = array(
         'cid',
         'host',
         'port',
@@ -62,10 +45,40 @@ class JasminSmppc extends JasminObject
         'proto_id',
         'pdu_red_to',
         'src_ton'
-    );
+    );*/
 
     public function __construct()
     {
+        $this->properties['cid'] = $this->id;
         parent::__construct();
+    }
+
+    /**
+     * start()
+     *
+     * Starts the smpp connection
+     *
+     * @return null|string
+     */
+    public function start()
+    {
+        $result = $this->telnet->doCommand($this->command . ' -1 ' . $this->id);
+
+        return $result;
+    }
+
+    /**
+     * stop()
+     *
+     * Stops the smpp connection
+     *
+     * @return null|string
+     */
+    public function stop()
+    {
+        $result = $this->telnet->doCommand($this->command . ' -0 ' . $this->id);
+
+        return $result;
+
     }
 }

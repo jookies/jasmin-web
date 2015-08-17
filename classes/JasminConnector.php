@@ -23,9 +23,12 @@ include('classes/TelnetConnector.php');
 
 abstract class JasminConnector
 {
-    var $telnet;
+    protected $telnet;
+    protected $properties;
 
     abstract public function getAll();
     abstract public function save();
+    abstract public function update();
+    abstract public function show();
     abstract public function delete();
 }

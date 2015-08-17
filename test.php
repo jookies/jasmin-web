@@ -18,22 +18,30 @@
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-include('classes/JasminGroup.php');
-include('classes/JasminSmppc.php');
-
+include('autoload.php');
+/*
 $groupconn = new JasminGroup();
 
-$groupconn->getAll();
 
-$groupconn->properties['gid'] = 'customers3';
+$groupconn->id = 'customers3';
 $groupconn->save();
 
-$groupconn->properties['gid'] = 'customers2';
+$groupconn->id = 'customers2';
 $groupconn->save();
 
 
-$groupconn->key = 'customers2';
-echo $groupconn->delete();
+$groupconn->id = 'customers2';
+$groupconn->delete();
+//$groupconn->getAll();
+
+*/
+$user = new JasminUser();
+
+$user->id = 'sotiris';
+$user->properties['username'] = 'sotiris';
+$user->properties['password'] = 'sotiris';
+$user->properties['gid'] = 'customers3';
+echo $user->save();
 //$smppconn = new JasminSMPPClientConnector();
 
 //$smppconn->cid = 'test';

@@ -28,12 +28,13 @@ include('classes/JasminObject.php');
  */
 class JasminGroup extends JasminObject
 {
+    var $id;
     var $command = 'group';
-    var $key;
     var $properties;
 
     public function __construct()
     {
+        $this->properties['gid'] = $this->id;
         parent::__construct();
     }
 

@@ -22,9 +22,10 @@ class TelnetConnector
     var $global_buffer;
     var $fp = null;
     var $loginprompt;
+    private static $instance;
 
     /**
-     * Constructor()
+     * __construct()
      *
      * constructor for telnetconnector that connects to telnet server for jasmin.
      *
@@ -37,20 +38,25 @@ class TelnetConnector
     public function __construct($server = '127.0.0.1', $port = 8990, $user = null, $pass = null)
     {
         $neededphpvers = '5.3.0';
-        if (version_compare(PHP_VERSION, $neededphpvers, '<')) {
+        if (version_compare(PHP_VERSION, $neededphpvers, '<'))
+        {
             throw new Exception('LowPhpVersionException');
         }
-        if (!is_int($port)) {
+        if (!is_int($port))
+        {
             throw new Exception('InvalidPortFormatException');
         }
-        if (!filter_var($server, FILTER_VALIDATE_IP)) {
+        if (!filter_var($server, FILTER_VALIDATE_IP))
+        {
             throw new Exception('InvalidServerIPFormatException');
         }
-        if (empty($user) || empty($pass)) {
+        if (empty($user) || empty($pass))
+        {
             throw new Exception('NullUserPassException');
         }
 
-        if ($this->fp = fsockopen($server, $port)) {
+        if ($this->fp = fsockopen($server, $port))
+        {
 
             $response = $this->getResponse();
 
@@ -66,28 +72,49 @@ class TelnetConnector
             $response = $this->getResponse();
             $response = explode("\n", $response);
 
-            if (($response[count($response) - 1] == '') || ($this->loginprompt == $response[count($response) - 1])) {
+            if (($response[count($response) - 1] == '') || ($this->loginprompt == $response[count($response) - 1]))
+            {
                 throw new Exception('LoginFailedException');
             }
-        } else {
+        } else
+        {
             throw new Exception('UnableToOpenConnectionException');
         }
     }
 
     /**
-     * disconnect()
+     * getInstance()
      *
-     * Executes the exit command.
+     * singleton for Telnetconnector
+     *
+     * @return TelnetConnector
+     */
+    public static function getInstance($server = '127.0.0.1', $port = 8990, $user = null, $pass = null)
+    {
+        if (!self::$instance)
+        {
+            self::$instance = new TelnetConnector($server, $port, $user, $pass);
+        }
+
+        return self::$instance;
+    }
+
+    /**
+     * __destruct()
+     *
+     * Executes the exit command on class destruction.
      *
      * @throws Exception
      */
-    public function disconnect()
+    public function __destruct()
     {
-        if ($this->fp) {
+        if ($this->fp)
+        {
             $this->doCommand('exit');
             fclose($this->fp);
             $this->fp = null;
-        } else {
+        } else
+        {
             throw new Exception('NoAvailableConnectionException');
         }
     }
@@ -106,7 +133,8 @@ class TelnetConnector
 
         $response = null;
 
-        if ($this->fp) {
+        if ($this->fp)
+        {
             fwrite($this->fp, $command);
 
             usleep($this->sleeptime);
@@ -122,7 +150,7 @@ class TelnetConnector
      * getResponse()
      *
      * Gets the response string from the server.
-     *
+     * TODO: doesn't work as intended. It doesn't return the proper telnet response string.
      * @return string
      */
     public function getResponse()
@@ -138,6 +166,12 @@ class TelnetConnector
 */
         usleep($this->sleeptime);
         $c = fread($this->fp, 8192);
+
+
+        //$c = "";
+        //while (!feof($this->fp)) {
+        //   $c .= fgets($this->fp, 1024)."<BR>\n";
+        //}
 
         return $c;
 

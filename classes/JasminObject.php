@@ -2,18 +2,26 @@
 
 include('classes/JasminConnector.php');
 
+/**
+ * Class JasminObject
+ *
+ * Provides an entry point for all jasmin cli modules.
+ *
+ */
 class JasminObject extends JasminConnector
 {
-    var $key;
+    var $id;
     var $command;
     var $properties;
     var $telnet;
 
     public function __construct()
     {
-        try {
-            $this->telnet = new TelnetConnector('127.0.0.1', 8990, 'jcliadmin', 'jclipwd');
-        } catch (Exception $e) {
+        try
+        {
+            $this->telnet = TelnetConnector::getInstance('127.0.0.1', 8990, 'jcliadmin', 'jclipwd');
+        } catch (Exception $e)
+        {
             echo('Telnet connection failed :' . $e->getMessage());
 
             return false;
@@ -22,7 +30,7 @@ class JasminObject extends JasminConnector
 
     public function __destruct()
     {
-        $this->telnet->disconnect();
+
     }
 
     /**
@@ -58,7 +66,8 @@ class JasminObject extends JasminConnector
     {
         $this->telnet->doCommand($this->command . ' -a');
 
-        foreach ($this->properties as $property_key => $property_value) {
+        foreach ($this->properties as $property_key => $property_value)
+        {
             $this->telnet->doCommand($property_key . ' ' . $property_value);
         }
         $result = $this->telnet->doCommand('ok');
@@ -79,7 +88,47 @@ class JasminObject extends JasminConnector
      */
     public function delete()
     {
-        $result = $this->telnet->doCommand($this->command . ' -r ' . $this->key);
+        $result = $this->telnet->doCommand($this->command . ' -r ' . $this->id);
+
+        return $result;
+    }
+
+    /**
+     * show()
+     *
+     * Shows information about the object
+     *
+     * @return null|string
+     */
+    public function show()
+    {
+        $result = $this->telnet->doCommand($this->command . ' -s ' . $this->id);
+
+        return $result;
+    }
+
+    /**
+     * update()
+     *
+     * Update information about the object
+     * @return null|string
+     */
+    public function update()
+    {
+        $result = $this->telnet->doCommand($this->command . ' -u ' . $this->id);
+
+        return $result;
+    }
+
+    /**
+     * flush()
+     *
+     * Flashes the table of the object
+     * @return null|string
+     */
+    public function flush()
+    {
+        $result = $this->telnet->doCommand($this->command . ' -f');
 
         return $result;
     }

@@ -25,10 +25,8 @@ before_install:
     # jasmin installation requirement:
     # As documented here http://docs.jasminsms.com/en/latest/installation/index.html
     - sudo apt-get install -qq python-dev libffi-dev libssl-dev
+    - sudo git clone --depth=50 git://github.com/jookies/jasmin.git jookies/jasmin
     - sudo useradd jasmin
     - sudo mkdir -p /var/log/jasmin /etc/jasmin/resource /etc/jasmin/init-script /etc/jasmin/store /var/run/jasmin
     - sudo chown `whoami` /etc/jasmin /etc/jasmin/resource /etc/jasmin/init-script
     - sudo chown jasmin. /var/log/jasmin /etc/jasmin/store /var/run/jasmin
-notifications:
-    slack:
-        secure: guCY7vL67vUhvNYLzInV/EIPMZ7ciq+/s0UlfmKvGYrjIMwXdgfshgKXdHF194eQ9+f0dF8ea1P1/aGqCE4Q4ULPZ555FbftNy/bVLfUPn01+odorAux3rVNq4ezX2QlQc06DpVS2r7U+grM+MQtNdRjoZIuAeipp3YRhyyuIr8=
