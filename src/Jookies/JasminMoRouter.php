@@ -1,14 +1,15 @@
 <?php
+namespace Jookies;
 
 /**
- * Class JasminMtRouter
+ * Class JasminMoRouter
  *
  * id property is the order for that class
  */
-class JasminMtRouter extends JasminObject
+class JasminMoRouter extends JasminObject
 {
     var $id;
-    var $command = 'mtrouter';
+    var $command = 'morouter';
     var $properties;
 
     public function __construct()

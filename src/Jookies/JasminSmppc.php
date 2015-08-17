@@ -1,4 +1,7 @@
 <?php
+
+namespace Jookies;
+
 /**
  * Class JasminSmppc
  *

@@ -1,6 +1,5 @@
 <?php
-
-include('classes/JasminConnector.php');
+namespace Jookies;
 
 /**
  * Class JasminObject
@@ -17,15 +16,15 @@ class JasminObject extends JasminConnector
 
     public function __construct()
     {
-        try
-        {
+        try {
             $this->telnet = TelnetConnector::getInstance('127.0.0.1', 8990, 'jcliadmin', 'jclipwd');
-        } catch (Exception $e)
-        {
+        } catch (Exception $e) {
             echo('Telnet connection failed :' . $e->getMessage());
 
             return false;
         }
+
+        return true;
     }
 
     public function __destruct()
@@ -66,8 +65,7 @@ class JasminObject extends JasminConnector
     {
         $this->telnet->doCommand($this->command . ' -a');
 
-        foreach ($this->properties as $property_key => $property_value)
-        {
+        foreach ($this->properties as $property_key => $property_value) {
             $this->telnet->doCommand($property_key . ' ' . $property_value);
         }
         $result = $this->telnet->doCommand('ok');

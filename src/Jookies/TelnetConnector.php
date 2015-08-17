@@ -1,20 +1,7 @@
 <?php
 
-/**
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- *
- */
+namespace Jookies;
+
 class TelnetConnector
 {
     var $sleeptime = 125000;
@@ -38,25 +25,20 @@ class TelnetConnector
     public function __construct($server = '127.0.0.1', $port = 8990, $user = null, $pass = null)
     {
         $neededphpvers = '5.3.0';
-        if (version_compare(PHP_VERSION, $neededphpvers, '<'))
-        {
+        if (version_compare(PHP_VERSION, $neededphpvers, '<')) {
             throw new Exception('LowPhpVersionException');
         }
-        if (!is_int($port))
-        {
+        if (!is_int($port)) {
             throw new Exception('InvalidPortFormatException');
         }
-        if (!filter_var($server, FILTER_VALIDATE_IP))
-        {
+        if (!filter_var($server, FILTER_VALIDATE_IP)) {
             throw new Exception('InvalidServerIPFormatException');
         }
-        if (empty($user) || empty($pass))
-        {
+        if (empty($user) || empty($pass)) {
             throw new Exception('NullUserPassException');
         }
 
-        if ($this->fp = fsockopen($server, $port))
-        {
+        if ($this->fp = fsockopen($server, $port)) {
 
             $response = $this->getResponse();
 
@@ -72,12 +54,10 @@ class TelnetConnector
             $response = $this->getResponse();
             $response = explode("\n", $response);
 
-            if (($response[count($response) - 1] == '') || ($this->loginprompt == $response[count($response) - 1]))
-            {
+            if (($response[count($response) - 1] == '') || ($this->loginprompt == $response[count($response) - 1])) {
                 throw new Exception('LoginFailedException');
             }
-        } else
-        {
+        } else {
             throw new Exception('UnableToOpenConnectionException');
         }
     }
@@ -87,12 +67,15 @@ class TelnetConnector
      *
      * singleton for Telnetconnector
      *
+     * @param string $server
+     * @param int $port
+     * @param null $user
+     * @param null $pass
      * @return TelnetConnector
      */
     public static function getInstance($server = '127.0.0.1', $port = 8990, $user = null, $pass = null)
     {
-        if (!self::$instance)
-        {
+        if (!self::$instance) {
             self::$instance = new TelnetConnector($server, $port, $user, $pass);
         }
 
@@ -108,13 +91,11 @@ class TelnetConnector
      */
     public function __destruct()
     {
-        if ($this->fp)
-        {
+        if ($this->fp) {
             $this->doCommand('exit');
             fclose($this->fp);
             $this->fp = null;
-        } else
-        {
+        } else {
             throw new Exception('NoAvailableConnectionException');
         }
     }
@@ -133,17 +114,14 @@ class TelnetConnector
 
         $response = null;
 
-        if ($this->fp)
-        {
+        if ($this->fp) {
             fwrite($this->fp, $command);
-
             usleep($this->sleeptime);
             $response = $this->getResponse();
             $this->global_buffer .= $response;
-
-            return $response;
         }
 
+        return $response;
     }
 
     /**

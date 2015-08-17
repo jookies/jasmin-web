@@ -1,4 +1,5 @@
 <?php
+namespace Jookies;
 
 class JasminUser extends JasminObject
 {

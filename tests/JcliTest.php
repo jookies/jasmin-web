@@ -1,7 +1,5 @@
 <?php
-//include('autoload.php');
-include('classes/JasminGroup.php');
-include('classes/JasminUser.php');
+require '../vendor/autoload.php';
 
 class JcliTest extends PHPUnit_Framework_TestCase
 {
@@ -11,8 +9,8 @@ class JcliTest extends PHPUnit_Framework_TestCase
 
     public function __construct()
     {
-        $this->groupconn = new JasminGroup();
-        $this->userconn = new JasminUser();
+        $this->groupconn = new Jookies\JasminGroup();
+        $this->userconn = new Jookies\JasminUser();
     }
 
     public function test_group_addition()
