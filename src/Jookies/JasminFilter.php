@@ -8,14 +8,17 @@ namespace Jookies;
  */
 class JasminFilter extends JasminObject
 {
-    var $id;
     var $command = 'filter';
     var $properties;
 
     public function __construct()
     {
-        $this->properties['fid'] = $this->id;
         parent::__construct();
+    }
+    public function set_id($id)
+    {
+        $this->id = $id;
+        $this->properties['fid'] =$id;
     }
 
 }

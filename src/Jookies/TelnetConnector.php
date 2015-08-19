@@ -5,7 +5,7 @@ namespace Jookies;
 class TelnetConnector
 {
     var $sleeptime = 125000;
-    var $loginsleeptime = 1000000;
+    var $loginsleeptime = 100000;
     var $global_buffer;
     var $fp = null;
     var $loginprompt;
@@ -26,39 +26,37 @@ class TelnetConnector
     {
         $neededphpvers = '5.3.0';
         if (version_compare(PHP_VERSION, $neededphpvers, '<')) {
-            throw new Exception('LowPhpVersionException');
+            throw new \Exception('LowPhpVersionException');
         }
         if (!is_int($port)) {
-            throw new Exception('InvalidPortFormatException');
+            throw new \Exception('InvalidPortFormatException');
         }
         if (!filter_var($server, FILTER_VALIDATE_IP)) {
-            throw new Exception('InvalidServerIPFormatException');
+            throw new \Exception('InvalidServerIPFormatException');
         }
         if (empty($user) || empty($pass)) {
-            throw new Exception('NullUserPassException');
+            throw new \Exception('NullUserPassException');
         }
 
         if ($this->fp = fsockopen($server, $port)) {
 
+
+            fwrite($this->fp, "$user\r");
+            usleep($this->sleeptime);
+            //echo fgets($this->fp, 8192);
+            fwrite($this->fp, "$pass\r");
+
+            usleep($this->sleeptime);
+            fwrite($this->fp, chr(0));
+            //echo fgets($this->fp, 8192);
+
             $response = $this->getResponse();
 
-            $response = explode("\n", $response);
-            $this->loginprompt = $response[count($response) - 1];
+            //var_dump($response);
 
-            fputs($this->fp, "$user\r");
-            usleep($this->sleeptime);
 
-            fputs($this->fp, "$pass\r");
-            usleep($this->sleeptime);
-
-            $response = $this->getResponse();
-            $response = explode("\n", $response);
-
-            if (($response[count($response) - 1] == '') || ($this->loginprompt == $response[count($response) - 1])) {
-                throw new Exception('LoginFailedException');
-            }
         } else {
-            throw new Exception('UnableToOpenConnectionException');
+            throw new \Exception('UnableToOpenConnectionException');
         }
     }
 
@@ -92,11 +90,11 @@ class TelnetConnector
     public function __destruct()
     {
         if ($this->fp) {
-            $this->doCommand('exit');
+            //$this->doCommand('quit');
             fclose($this->fp);
             $this->fp = null;
         } else {
-            throw new Exception('NoAvailableConnectionException');
+            throw new \Exception('NoAvailableConnectionException');
         }
     }
 
@@ -116,9 +114,10 @@ class TelnetConnector
 
         if ($this->fp) {
             fwrite($this->fp, $command);
+            fwrite($this->fp, " ");
             usleep($this->sleeptime);
+
             $response = $this->getResponse();
-            $this->global_buffer .= $response;
         }
 
         return $response;
@@ -133,17 +132,16 @@ class TelnetConnector
      */
     public function getResponse()
     {
-        /*$res = '';
-        do
-        {
-            $res .= fread($this->fp, 1000);
-            $s = socket_get_status($this->fp);
-        } while ($s['unread_bytes']);
 
-        return $res;
-*/
+
         usleep($this->sleeptime);
-        $c = fread($this->fp, 8192);
+
+        $buffer = trim(fread($this->fp, 2048));
+        // Cut last line from buffer (almost always prompt)
+        //$buffer = explode("\n", $buffer);
+        //unset($buffer[count($buffer) - 1]);
+        var_dump($buffer);
+        //$buffer = implode("\n", $buffer);
 
 
         //$c = "";
@@ -151,7 +149,7 @@ class TelnetConnector
         //   $c .= fgets($this->fp, 1024)."<BR>\n";
         //}
 
-        return $c;
+        return $buffer;
 
     }
 }

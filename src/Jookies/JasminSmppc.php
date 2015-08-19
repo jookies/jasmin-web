@@ -9,7 +9,6 @@ namespace Jookies;
  */
 class JasminSmppc extends JasminObject
 {
-    var $id;
     var $command = 'smppc';
     var $properties;
     /*var $properties = array(
@@ -52,8 +51,13 @@ class JasminSmppc extends JasminObject
 
     public function __construct()
     {
-        $this->properties['cid'] = $this->id;
         parent::__construct();
+    }
+
+    public function set_id($id)
+    {
+        $this->id = $id;
+        $this->properties['cid'] =$id;
     }
 
     /**

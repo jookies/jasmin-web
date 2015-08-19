@@ -69,8 +69,15 @@ class JasminObject extends JasminConnector
             $this->telnet->doCommand($property_key . ' ' . $property_value);
         }
         $result = $this->telnet->doCommand('ok');
+        //echo "edo:" . strtolower($result);
+        if (strstr(strtolower($result),'successfully')) {
+            echo $result;
 
-        return $result;
+            return true;
+        }
+
+        return false;
+//        return $result;
     }
 
     /**

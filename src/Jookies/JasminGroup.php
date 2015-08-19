@@ -4,25 +4,21 @@ namespace Jookies;
 /**
  * Class JasminGroup
  *
- * Usage:
- * $groupcon = new JasminGroup();
- * $groupcon->properties['gid'] = 'customers';
- * $groupcon->save();
- *
- * or
- *
- * $groupcon->delete();
+ * id property is the gid for that class
  */
 class JasminGroup extends JasminObject
 {
-    var $id;
     var $command = 'group';
     var $properties;
 
     public function __construct()
     {
-        $this->properties['gid'] = $this->id;
         parent::__construct();
     }
 
+    public function set_id($id)
+    {
+        $this->id = $id;
+        $this->properties['gid'] = $id;
+    }
 }

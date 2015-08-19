@@ -8,14 +8,17 @@ namespace Jookies;
  */
 class JasminMtRouter extends JasminObject
 {
-    var $id;
     var $command = 'mtrouter';
     var $properties;
 
     public function __construct()
     {
-        $this->properties['order'] = $this->id;
         parent::__construct();
     }
 
+    public function set_id($id)
+    {
+        $this->id = $id;
+        $this->properties['order'] =$id;
+    }
 }
