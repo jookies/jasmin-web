@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '../vendor/autoload.php';
+require __DIR__ . "/../vendor/autoload.php";
 
 class JcliTest extends PHPUnit_Framework_TestCase
 {
