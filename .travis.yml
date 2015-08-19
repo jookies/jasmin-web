@@ -13,7 +13,7 @@ before_script:
 - sudo invoke-rc.d jasmind start
 - composer self-update
 before_install:
-- curl -s https://packagecloud.io/install/repositories/jookies/python-jasmin/script.deb.sh && chmod +x script.deb.sh && ./script.deb.sh
+- curl -O https://packagecloud.io/install/repositories/jookies/python-jasmin/script.deb.sh && chmod +x script.deb.sh && ./script.deb.sh
 - sudo apt-get update -qq
 - sudo apt-get install python-dev libffi-dev libssl-dev python-twisted python-jasmin
 notifications:
