@@ -11,10 +11,11 @@ services:
 - redis-server
 before_script:
 - sudo invoke-rc.d jasmind start
+- composer self-update
 before_install:
-- sudo curl -s https://packagecloud.io/install/repositories/jookies/python-jasmin/script.deb.sh | sudo bash
+- sudo curl -s https://packagecloud.io/install/repositories/jookies/python-jasmin/script.deb.sh && sudo bash script.deb.sh
 - sudo apt-get update -qq
-- sudo apt-get install -qq python-dev libffi-dev libssl-dev python-twisted python-jasmin
+- sudo apt-get install python-dev libffi-dev libssl-dev python-twisted python-jasmin
 notifications:
   slack:
     secure: L9iFy/ejd5APfKcGv23FrCfJzkjT54uNHOB/Ub6Z3lKom8ZhzXFxq3MbWKSo/ZtHvwS6LqNET70Jpsz5lznUsBBuXFxb6qWtocpiorisQnSyAGaUuFVoV8xaxThUA1BtWtb4QkwcQZvgFARVshUvFmPEImsaMSgCUNF+Hthdxk2UJ8IUDkaCC1Io8ROdAOlxDcLvzufR32hAbaUE61CijJz3w0qi7zxKzKjb1+1W2X8xXgu3oigA8gibMIK5WGYSku7Z1DuvJmID5V241IYDZJvupVop0nejyQ/Aj51mCEOnQMomrmHIlyx+2qShXA9MoVDIlb4Fu0ih/+aXwXQDOUZB+T/+ywGKLY4yd25C1N4+WGBQeeukdEP42xOwR/3lHm9v5RC51J4fspjvn5ofR1gEL2S1A1n6OkWTwgOWCx2DK31e3RNM61ZbAs/7lGXLI8JtSLTnStfVvdig/19T5qwC1CYjEXq3TdU+1ksKO8q3Oa5FPpFLdop59oFHkILX86Xz8mV5cPqvhUp858bSRJCAvVbU3AOol/1/04uzqfFKysEcDifbhM8RGgI+Fyd92mFjusMaUys0RaIn+yvmVrHmL7MrRc9T8GDII3++4dq3/VdX13VnSeVaM9/yIXxCYk93apgcmBh4Z9KQssEwiKgAMlBu4+2iyKeJ009QdS0=
