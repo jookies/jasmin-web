@@ -9,15 +9,14 @@ install:
     - sudo wget https://raw.githubusercontent.com/jookies/jasmin/v0.6-beta/misc/config/init-script/jasmind-ubuntu -O /etc/init.d/jasmind
     - sudo chmod +x /etc/init.d/jasmind
     - sudo update-rc.d jasmind defaults
-    - sudo invoke-rc.d jasmind start
 script:
     - phpunit tests/JcliTest.php
 services:
     - rabbitmq
     - redis-server
 before_script:
-    - sudo invoke-rc.d jasmind start
     - composer self-update
+    - sudo invoke-rc.d jasmind start
 before_install:
     - sudo apt-get update -qq
     - sudo apt-get install python-dev libffi-dev libssl-dev python-twisted
