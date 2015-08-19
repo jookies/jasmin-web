@@ -8,7 +8,7 @@ php:
 # Commands to run tests:
 script:
     # phpunit test
-    - phpunit JcliTest.php
+    - phpunit tests/JcliTest.php
 services:
     - rabbitmq
     - redis-server
