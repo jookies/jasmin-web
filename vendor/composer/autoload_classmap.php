@@ -6,13 +6,13 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Jookies\\JasminConnector' => $baseDir . '/src/jookies/JasminConnector.php',
-    'Jookies\\JasminFilter' => $baseDir . '/src/jookies/JasminFilter.php',
-    'Jookies\\JasminGroup' => $baseDir . '/src/jookies/JasminGroup.php',
-    'Jookies\\JasminMoRouter' => $baseDir . '/src/jookies/JasminMoRouter.php',
-    'Jookies\\JasminMtRouter' => $baseDir . '/src/jookies/JasminMtRouter.php',
-    'Jookies\\JasminObject' => $baseDir . '/src/jookies/JasminObject.php',
-    'Jookies\\JasminSmppc' => $baseDir . '/src/jookies/JasminSmppc.php',
-    'Jookies\\JasminUser' => $baseDir . '/src/jookies/JasminUser.php',
-    'Jookies\\TelnetConnector' => $baseDir . '/src/jookies/TelnetConnector.php',
+    'Jookies\\JasminConnector' => $baseDir . '/src/Jookies/JasminConnector.php',
+    'Jookies\\JasminFilter' => $baseDir . '/src/Jookies/JasminFilter.php',
+    'Jookies\\JasminGroup' => $baseDir . '/src/Jookies/JasminGroup.php',
+    'Jookies\\JasminMoRouter' => $baseDir . '/src/Jookies/JasminMoRouter.php',
+    'Jookies\\JasminMtRouter' => $baseDir . '/src/Jookies/JasminMtRouter.php',
+    'Jookies\\JasminObject' => $baseDir . '/src/Jookies/JasminObject.php',
+    'Jookies\\JasminSmppc' => $baseDir . '/src/Jookies/JasminSmppc.php',
+    'Jookies\\JasminUser' => $baseDir . '/src/Jookies/JasminUser.php',
+    'Jookies\\TelnetConnector' => $baseDir . '/src/Jookies/TelnetConnector.php',
 );
