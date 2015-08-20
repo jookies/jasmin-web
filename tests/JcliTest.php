@@ -15,21 +15,21 @@ class JcliTest extends PHPUnit_Framework_TestCase
 
     public function test_group_addition()
     {
-        $this->groupconn->set_id('customers4');
+        $this->groupconn->set_id('customers');
         $this->assertTrue($this->groupconn->save());
 //        $this->assertEquals('Successfully added Group [' . $this->groupconn->properties['gid'] . ']', $this->groupconn->save());
     }
 
-    /*public function test_group_deletion()
+    public function test_group_deletion()
     {
-        $this->groupconn->set_id('customers2');
-        $this->assertEquals('Successfully removed Group id:' . $this->groupconn->properties['gid'], $this->groupconn->delete());
+        $this->groupconn->set_id('customers');
+        $this->assertTrue($this->groupconn->delete());
     }
 
-    public function test_group_getAll()
+    /*public function test_group_getAll()
     {
         $this->groupconn->getAll();
-    }
+    }*/
 
     public function test_user_addition()
     {
@@ -38,12 +38,12 @@ class JcliTest extends PHPUnit_Framework_TestCase
         $this->userconn->set_id('sotiris');
         $this->userconn->properties['gid'] = 'customers3';
 
-        $this->assertEquals('Successfully added User [' . $this->userconn->properties['uid'] . '] to Group [' . $this->userconn->properties['gid'] . ']', $this->userconn->save());
+        $this->assertTrue($this->userconn->save());
     }
 
     public function test_user_deletion()
     {
         $this->userconn->set_id('sotiris');
-        $this->assertEquals('Successfully removed User id:' . $this->userconn->properties['uid'], $this->userconn->delete());
-    }*/
+        $this->assertTrue($this->userconn->delete());
+    }
 }

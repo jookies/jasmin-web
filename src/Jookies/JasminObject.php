@@ -70,14 +70,11 @@ class JasminObject extends JasminConnector
         }
         $result = $this->telnet->doCommand('ok');
         //echo "edo:" . strtolower($result);
-        if (strstr(strtolower($result),'successfully')) {
-            echo $result;
-
+        if (strstr(strtolower($result), 'successfully added')) {
             return true;
         }
 
         return false;
-//        return $result;
     }
 
     /**
@@ -94,8 +91,12 @@ class JasminObject extends JasminConnector
     public function delete()
     {
         $result = $this->telnet->doCommand($this->command . ' -r ' . $this->id);
+        if (strstr(strtolower($result), 'successfully removed')) {
 
-        return $result;
+            return true;
+        }
+
+        return false;
     }
 
     /**

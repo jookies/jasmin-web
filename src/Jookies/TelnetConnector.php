@@ -127,27 +127,18 @@ class TelnetConnector
      * getResponse()
      *
      * Gets the response string from the server.
-     * TODO: doesn't work as intended. It doesn't return the proper telnet response string.
      * @return string
      */
     public function getResponse()
     {
 
-
         usleep($this->sleeptime);
-
         $buffer = trim(fread($this->fp, 2048));
-        // Cut last line from buffer (almost always prompt)
+
         //$buffer = explode("\n", $buffer);
         //unset($buffer[count($buffer) - 1]);
-        var_dump($buffer);
+        //var_dump($buffer);
         //$buffer = implode("\n", $buffer);
-
-
-        //$c = "";
-        //while (!feof($this->fp)) {
-        //   $c .= fgets($this->fp, 1024)."<BR>\n";
-        //}
 
         return $buffer;
 
