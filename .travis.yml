@@ -19,9 +19,10 @@ before_script:
     - sudo invoke-rc.d jasmind start
     - sudo ps aux | grep jasmind
     - sudo cat /etc/jasmin/jasmin.cfg
+    - sudo telnet 127.0.0.1 8990
 before_install:
     - sudo apt-get update -qq
-    - sudo apt-get install python-dev libffi-dev libssl-dev python-twisted
+    - sudo apt-get install python-dev libffi-dev libssl-dev python-twisted telnet
     - sudo useradd jasmin
     - sudo mkdir -p /var/log/jasmin /etc/jasmin/resource /etc/jasmin/init-script /etc/jasmin/store /var/run/jasmin
     - sudo chown `whoami` /etc/jasmin /etc/jasmin/resource /etc/jasmin/init-script
