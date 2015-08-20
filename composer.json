@@ -25,7 +25,7 @@
   },
   "autoload": {
     "classmap": [
-      "src/jookies"
+      "src/Jookies"
     ]
   }
 }
