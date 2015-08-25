@@ -12,6 +12,18 @@ install:
 script:
 # DEBUGGING / Fourat
      - python -V
+     - ps ax|grep rabbit
+     - ps ax|grep redis
+     - ls -l /var/log|grep jasmin
+     - ls -l /etc/jasmin
+     - sudo /usr/bin/python /usr/local/bin/jasmind.py --username jcliadmin --password jclipwd &> /tmp/somelog
+     - ls -l /var/log/jasmin
+     - sleep 100
+     - cat /tmp/somelog
+     - netstat -anp|grep 1401
+     - netstat -anp|grep 8990
+     - netstat -anp|grep 2775
+     - ls -l /var/log/jasmin
 #    - phpunit tests/JcliTest.php
 services:
     - rabbitmq
