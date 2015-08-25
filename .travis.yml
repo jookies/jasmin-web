@@ -16,7 +16,7 @@ script:
      - ps ax|grep redis
      - ls -l /var/log|grep jasmin
      - ls -l /etc/jasmin
-     - sudo /usr/bin/python /usr/local/bin/jasmind.py --username jcliadmin --password jclipwd &> /tmp/somelog
+     - sudo /usr/bin/python /usr/local/bin/jasmind.py --username jcliadmin --password jclipwd &> /tmp/somelog &
      - ls -l /var/log/jasmin
      - sleep 100
      - cat /tmp/somelog
