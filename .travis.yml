@@ -10,7 +10,11 @@ install:
     - sudo chmod +x /etc/init.d/jasmind
     - sudo update-rc.d jasmind defaults
 script:
-    - phpunit tests/JcliTest.php
+# DEBUGGING / Fourat
+     - ps ax|grep jasmin
+     - netstat -anp|grep 8990
+     - telnet 127.0.0.1 8990
+#    - phpunit tests/JcliTest.php
 services:
     - rabbitmq
     - redis-server
