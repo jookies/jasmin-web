@@ -17,10 +17,7 @@ services:
 before_script:
     - composer self-update
     - sudo invoke-rc.d jasmind start
-    - sudo ps aux | grep jasmind
-    - sudo cat /etc/jasmin/jasmin.cfg
-    - sudo netstat --all --program
-    - sudo telnet 127.0.0.1 8990
+
 before_install:
     - sudo apt-get update -qq
     - sudo apt-get install python-dev libffi-dev libssl-dev python-twisted telnet
