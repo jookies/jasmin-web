@@ -14,6 +14,10 @@ script:
      - ps ax|grep jasmin
      - netstat -anp|grep 8990
      - telnet 127.0.0.1 8990
+     - ls -l /var/log/jasmin
+     - cat /var/log/jasmin/jcli.log
+     - cat /var/log/jasmin/amqp-client.log
+     - cat /var/log/jasmin/redis-client.log
 #    - phpunit tests/JcliTest.php
 services:
     - rabbitmq
