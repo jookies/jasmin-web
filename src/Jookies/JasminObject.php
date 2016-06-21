@@ -51,7 +51,7 @@ class JasminObject extends JasminConnector
     /**
      * save()
      *
-     * Saves the properties for the given command (user, group, smppc, etc.)
+     * Saves the attributes for the given command (user, group, smppc, etc.)
      * Example:
      *  jcli: group -a
      *  Adding a new Group: (ok: save, ko: exit)

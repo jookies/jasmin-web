@@ -11,7 +11,7 @@ class JasminSmppc extends JasminObject
 {
     var $command = 'smppc';
     var $properties;
-    /*var $properties = array(
+    /*var $attributes = array(
         'cid',
         'host',
         'port',
