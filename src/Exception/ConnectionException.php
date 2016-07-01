@@ -4,7 +4,11 @@
  * Date: 17.06.16
  */
 
-
+/**
+ * Class ConnectionException
+ * @package JasminWeb\Exception
+ * Basic exception for connection trouble for creation telnet connection
+ */
 class ConnectionException extends \Exception
 {
 

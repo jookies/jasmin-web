@@ -8,17 +8,54 @@ use JasminWeb\Jasmin\TelnetConnector as JasminConnector;
  */
 class UserTest extends PHPUnit_Framework_TestCase
 {
+    protected static $telnetConnector;
+
+    public static function setUpBeforeClass()
+    {
+        self::$telnetConnector = JasminConnector::init('jcliadmin', 'jclipwd');
+        $groupManager = new \JasminWeb\Jasmin\Group(self::$telnetConnector);
+        $groupManager->setId('test_new_one');
+        $groupManager->delete();
+        $groupManager->setId('test_exist');
+        $groupManager->save();
+
+        $userManager = new \JasminWeb\Jasmin\User(self::$telnetConnector);
+        $userManager->setId('test_not_exist');
+        $userManager->delete();
+        $userManager->setId('test_new_one');
+        $userManager->delete();
+        $userManager->setId('test_exist');
+        $userManager->delete();
+
+        $userManager->setId('test_exist');
+        $userManager->attributes['username'] = 'test_exist';
+        $userManager->attributes['password'] = '12345';
+        $userManager->attributes['gid'] = 'test_exist';
+        $userManager->add();
+    }
+
+    public static function tearDownAfterClass()
+    {
+        $groupManager = new \JasminWeb\Jasmin\Group(self::$telnetConnector);
+        $groupManager->setId('test_new_one');
+        $groupManager->delete();
+        $groupManager->setId('test_exist');
+        $groupManager->delete();
+
+
+        $groupManager->setId('test_not_exist');
+        $groupManager->delete();
+    }
+
     public function testGetAll()
     {
-        $connection = JasminConnector::init('jcliadmin', 'jclipwd');
-        $manager = new \JasminWeb\Jasmin\User($connection);
+        $manager = new \JasminWeb\Jasmin\User(self::$telnetConnector);
         $this->assertInternalType('array', $manager->getAll());
     }
 
     public function testCheckExistence()
     {
-        $connection = JasminConnector::init('jcliadmin', 'jclipwd');
-        $manager = new \JasminWeb\Jasmin\User($connection);
+        $manager = new \JasminWeb\Jasmin\User(self::$telnetConnector);
         $this->assertTrue($manager->checkExist('test_exist'));
         $this->assertFalse($manager->checkExist('test_not_exist'));
     }
@@ -26,8 +63,9 @@ class UserTest extends PHPUnit_Framework_TestCase
 
     public function testAddNewOne()
     {
-        $connection = JasminConnector::init('jcliadmin', 'jclipwd');
-        $manager = new \JasminWeb\Jasmin\User($connection);
+        $manager = new \JasminWeb\Jasmin\User(self::$telnetConnector);
+        $groupManager = new \JasminWeb\Jasmin\Group(self::$telnetConnector);
+        $groupManager->setId('test_new_one');
         $this->assertFalse($manager->checkExist('test_new_one'));
         $manager->setId('test_new_one');
         $manager->attributes['username'] = 'test_new_one';
@@ -36,11 +74,10 @@ class UserTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($manager->add());
         $this->assertTrue($manager->checkExist('test_new_one'));
+        $this->assertTrue($groupManager->checkExist('test_new_one'));
         $this->assertTrue($manager->delete());
         $this->assertFalse($manager->checkExist('test_new_one'));
 
-        $groupManager = new \JasminWeb\Jasmin\Group($connection);
-        $groupManager->setId('test_new_one');
-        $groupManager->delete();
+        $this->assertTrue($groupManager->delete());
     }
 }

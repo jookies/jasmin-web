@@ -9,17 +9,40 @@ use JasminWeb\Jasmin\TelnetConnector as JasminConnector;
 
 class GroupTest extends PHPUnit_Framework_TestCase
 {
+    protected static $telnetConnector;
+
+    public static function setUpBeforeClass()
+    {
+        self::$telnetConnector = JasminConnector::init('jcliadmin', 'jclipwd');
+        $manager = new \JasminWeb\Jasmin\Group(self::$telnetConnector);
+        $manager->setId('test_new_one');
+        $manager->delete();
+        $manager->setId('test_not_exist');
+        $manager->delete();
+        $manager->setId('test_exist');
+        $manager->save();
+    }
+
+    public static function tearDownAfterClass()
+    {
+        $manager = new \JasminWeb\Jasmin\Group(self::$telnetConnector);
+        $manager->setId('test_new_one');
+        $manager->delete();
+        $manager->setId('test_not_exist');
+        $manager->delete();
+        $manager->setId('test_exist');
+        $manager->delete();
+    }
+
     public function testGetAll()
     {
-        $connection = JasminConnector::init('jcliadmin', 'jclipwd');
-        $manager = new \JasminWeb\Jasmin\Group($connection);
+        $manager = new \JasminWeb\Jasmin\Group(self::$telnetConnector);
         $this->assertInternalType('array', $manager->getAll());
     }
 
     public function testAddNewOne()
     {
-        $connection = JasminConnector::init('jcliadmin', 'jclipwd');
-        $manager = new \JasminWeb\Jasmin\Group($connection);
+        $manager = new \JasminWeb\Jasmin\Group(self::$telnetConnector);
         $this->assertFalse($manager->checkExist('test_new_one'));
         $manager->setId('test_new_one');
         $this->assertTrue($manager->save());
@@ -28,11 +51,9 @@ class GroupTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($manager->checkExist('test_new_one'));
     }
 
-    // todo add fictures for check group
     public function testCheckExistence()
     {
-        $connection = JasminConnector::init('jcliadmin', 'jclipwd');
-        $manager = new \JasminWeb\Jasmin\Group($connection);
+        $manager = new \JasminWeb\Jasmin\Group(self::$telnetConnector);
         $this->assertTrue($manager->checkExist('test_exist'));
         $this->assertFalse($manager->checkExist('test_not_exist'));
     }

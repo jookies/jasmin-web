@@ -9,7 +9,7 @@ class Group extends BaseObject
 {
     protected $command = 'group';
 
-    protected $required = ['gid'];
+    protected $requiredAttributes = ['gid'];
 
 
     public function getId()

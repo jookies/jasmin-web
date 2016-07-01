@@ -9,7 +9,7 @@ class User extends BaseObject
 {
     protected $command = 'user';
 
-    protected $required = ['uid', 'username', 'password', 'gid'];
+    protected $requiredAttributes = ['uid', 'username', 'password', 'gid'];
 
     public function getId()
     {
@@ -49,14 +49,14 @@ class User extends BaseObject
                 array_push($fixed_connector, $temp);
             }
 
-            $connect['uid'] = $fixed_connector[0];
-            $connect['gid'] = $fixed_connector[1];
-            $connect['username'] = $fixed_connector[2];
-            $connect['balance'] = $fixed_connector[3];
-            $connect['mt'] = $fixed_connector[4];
-            $connect['throughput'] = $fixed_connector[5];
-
-            array_push($connections, $connect);
+            $connections[] = [
+                'uid'        => $fixed_connector[0],
+                'gid'        => $fixed_connector[1],
+                'username'   => $fixed_connector[2],
+                'balance'    => $fixed_connector[3],
+                'mt'         => $fixed_connector[4],
+                'throughput' => $fixed_connector[5],
+            ];
         }
 
         return $connections;

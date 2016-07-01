@@ -6,8 +6,9 @@
 
 namespace JasminWeb\Jasmin\Filter;
 
+use JasminWeb\Jasmin\TelnetConnector;
 
 class GroupFilter extends Filter
 {
-    protected $required = ['fid', 'type', 'gid'];
+    protected $requiredAttributes = ['fid', 'type', 'gid'];
 }

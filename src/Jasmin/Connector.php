@@ -9,7 +9,7 @@ class Connector extends BaseObject
 {
     protected $command = 'smppccm';
 
-    protected $required = ['cid', 'username', 'password', 'port'];
+    protected $requiredAttributes = ['cid'];
 
     public function getId()
     {
@@ -23,15 +23,15 @@ class Connector extends BaseObject
 
     public function getAll()
     {
-        $users = parent::getAll();
+        $connectors = parent::getAll();
         // Explode jcli command output to fetch groups
-        $exploded = explode("#", $users);
+        $exploded = explode("#", $connectors);
 
         // Unset first and second elements that include unwanted results from the command group -l
         unset($exploded[0]);
         unset($exploded[1]);
 
-        $users = [];
+        $connectors = [];
         foreach ($exploded as $expl) {
             $user = trim($expl);
 
@@ -55,10 +55,10 @@ class Connector extends BaseObject
             $userz['starts'] = isset($fixed_user[3]) ? $fixed_user[3] : 0;
             $userz['stops'] = isset($fixed_user[4]) ? $fixed_user[4] : 0;
 
-            array_push($users, $userz);
+            array_push($connectors, $userz);
         }
 
-        return $users;
+        return $connectors;
     }
 
     /**

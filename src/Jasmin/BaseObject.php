@@ -1,14 +1,15 @@
 <?php namespace JasminWeb\Jasmin;
 
 /**
- * Class JasminObject
+ * Class BaseObject
+ * @package JasminWeb\Jasmin
  *
- * Provides an entry point for all jasmin cli modules.
- *
+ * Base class for all other entity
  */
 abstract class BaseObject
 {
     /**
+     * Telnet connector to jasmin db
      * @var TelnetConnector
      */
     protected $connector;
@@ -37,15 +38,19 @@ abstract class BaseObject
      */
     public $errors = [];
 
+    /**
+     * BaseObject constructor.
+     * @param TelnetConnector $connector
+     */
     public function __construct(TelnetConnector $connector)
     {
         $this->connector = $connector;
     }
 
     /**
-     * Get an array containing all the requested entities
+     * Get an string with containing all the requested entities
      *
-     * @return array
+     * @return string
      */
     public function getAll()
     {
@@ -53,15 +58,10 @@ abstract class BaseObject
     }
 
     /**
-     * Saves the attributes for the given command (user, group, smppc, etc.)
-     * Example:
-     *  jcli: group -a
-     *  Adding a new Group: (ok: save, ko: exit)
-     *  > gid customers
-     *  > ok
-     *  Successfully added Group [customers]
+     * Saves the attributes for the given command
      *
      * @return bool
+     * @throws \JasminWeb\Exception\ConnectorException
      */
     public function save()
     {
@@ -74,18 +74,19 @@ abstract class BaseObject
             $this->connector->doCommand($property_key . ' ' . $property_value);
         }
         $result = $this->connector->doCommand('ok');
-
-        return !!strstr(strtolower($result), 'successfully added');
+        if (!!strstr(strtolower($result), 'successfully added')) {
+            return true;
+        } else {
+            $this->errors['save'] = strtolower($result);
+            return false;
+        }
     }
 
     /**
      * Deletes the key for the given command
      *
-     * Example:
-     *  jcli: group -r customers
-     *  Successfully removed Group id:customers
-     *
-     * @return null|string
+     * @return bool
+     * @throws \JasminWeb\Exception\ConnectorException
      */
     public function delete()
     {
@@ -98,9 +99,10 @@ abstract class BaseObject
     }
 
     /**
-     * Shows information about the object
+     * Shows information about the object. Return plain string
+     * todo add implementation for every type of entity for return array
      *
-     * @return null|string
+     * @return string
      */
     public function show()
     {
@@ -111,7 +113,7 @@ abstract class BaseObject
 
     /**
      * Update information about the object
-     * @return null|string
+     * @return string
      */
     public function update()
     {
@@ -122,7 +124,7 @@ abstract class BaseObject
 
     /**
      * Flashes the table of the object
-     * @return null|string
+     * @return string
      */
     public function flush()
     {
@@ -157,4 +159,5 @@ abstract class BaseObject
      * @return mixed
      */
     abstract public function setId($id);
+
 }

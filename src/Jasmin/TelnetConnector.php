@@ -92,7 +92,7 @@ class TelnetConnector
      * Executes the inserted command to jasmin cli.
      *
      * @param $command
-     * @return null|string
+     * @return string
      * @throws ConnectorException
      */
     public function doCommand($command)
