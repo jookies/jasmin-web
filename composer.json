@@ -1,23 +1,20 @@
 {
   "name": "haegemon/jasmin-web",
-  "version": "0.0.1",
-  "description": "Jasminsms web api for jcli interconnection",
+  "version": "0.1",
+  "description": "Jasminsms web api for jcli connection.",
   "minimum-stability": "stable",
   "license": "Apache-2.0",
   "authors": [
     {
-      "name": "Sotiris Ganouris",
-      "email": "topgan1@gmail.com",
+      "name": "Pawel Samysev",
+      "email": "pawel.samysev@gmail.com",
       "role": "Developer"
     }
   ],
-  "support": {
-    "email": "topgan1@gmail.com"
-  },
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://github.com/jookies/jasmin-web.git"
+      "url": "https://github.com/haegemon/jasmin-web.git"
     }
   ],
   "require": {
