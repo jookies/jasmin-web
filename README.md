@@ -18,3 +18,11 @@ Realise base part of working with User, Group, Connector, Filter (User filter, C
 ## Examples:
 
 You can find some expamples at folder [examples](https://github.com/haegemon/jasmin-web/tree/master/examples).
+
+## Test
+
+All test based on phpunit. You should set environment variables for set connection params:
+- jasmin_admin_username - Username for test connection
+- jasmin_admin_password - Password for test connection
+- jasmin_admin_host - Host for test connection
+- jasmin_admin_port - port for test connection

@@ -15,7 +15,7 @@ class UserTest extends PHPUnit_Framework_TestCase
         $adminUsername = getenv('jasmin_admin_username') ?: 'jcliadmin';
         $adminPassword = getenv('jasmin_admin_password') ?: 'jclipwd';
         $adminHost = getenv('jasmin_admin_host') ?: '127.0.0.1';
-        $adminPort = getenv('jasmin_admin_password') ?: 8990;
+        $adminPort = getenv('jasmin_admin_port') ?: 8990;
         self::$telnetConnector = JasminConnector::init($adminUsername, $adminPassword, $adminHost, $adminPort);
 
         $groupManager = new \JasminWeb\Jasmin\Group(self::$telnetConnector);
