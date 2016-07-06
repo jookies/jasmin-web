@@ -15,7 +15,11 @@ class MtRouterTest extends PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$telnetConnector = JasminConnector::init('jcliadmin', 'jclipwd');
+        $adminUsername = getenv('jasmin_admin_username') ?: 'jcliadmin';
+        $adminPassword = getenv('jasmin_admin_password') ?: 'jclipwd';
+        $adminHost = getenv('jasmin_admin_host') ?: '127.0.0.1';
+        $adminPort = getenv('jasmin_admin_password') ?: 8990;
+        self::$telnetConnector = JasminConnector::init($adminUsername, $adminPassword, $adminHost, $adminPort);
 
         $connectorManager = new \JasminWeb\Jasmin\Connector(self::$telnetConnector);
         $connectorManager->setId('test_new_one');
