@@ -17,12 +17,4 @@ Realise base part of working with User, Group, Connector, Filter (User filter, C
 
 ## Examples:
 
-Create user example:
-```<?php
-        $manager = new \JasminWeb\Jasmin\User(JasminConnector::init('jcliadmin', 'jclipwd'));
-        $manager->setId('test_new_one');
-        $manager->attributes['username'] = 'test_new_one';
-        $manager->attributes['password'] = '12345';
-        $manager->attributes['gid'] = 'test_new_one';
-        $manager->add();
-```
+You can find some expamples at folder [examples](https://github.com/haegemon/jasmin-web/tree/master/examples).
