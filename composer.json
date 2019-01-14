@@ -18,15 +18,16 @@
     }
   ],
   "require": {
-    "php": ">=5.3.0"
+    "php": ">=7.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "5.1.*"
+    "phpunit/phpunit": "^7.4"
   },
   "autoload": {
     "psr-4": {
       "JasminWeb\\Jasmin\\" : "src/Jasmin/",
-      "JasminWeb\\Exception\\" : "src/Exception/"
+      "JasminWeb\\Exception\\" : "src/Exception/",
+      "JasminWeb\\Test\\": "tests/"
     }
   }
 }
