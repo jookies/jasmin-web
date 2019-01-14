@@ -35,8 +35,6 @@ class Connector extends BaseCommand
                 $row = trim($ff);
             }
 
-            echo $row;
-
             $temp_row = explode(' ', $row);
             $temp_row = array_filter($temp_row);
 
