@@ -39,15 +39,25 @@ class Filter extends BaseCommand
             $temp_filter = array_filter($temp_filter);
 
             $fixed_connector = [];
-            foreach ($temp_filter as $temp){
+            foreach ($temp_filter as $temp) {
                 $fixed_connector[] = $temp;
             }
-            $filters[] = [
-                'fid'         => $fixed_connector[0],
-                'type'        => $fixed_connector[1],
-                'routes'      => $fixed_connector[2],
-                'description' => $fixed_connector[3],
-            ];
+
+            $row = [];
+            $row['fid'] = $fixed_connector[0];
+            $row['type'] = $fixed_connector[1];
+            $row['description'] = substr($filter, strpos($filter, '<'), strpos($filter, '>'));
+            $row['routes'] = [];
+
+            if (false !== strpos($filter, 'MT')) {
+                $row['routes'][] = 'MT';
+            }
+
+            if (false !== strpos($filter, 'MO')) {
+                $row['routes'][] = 'MO';
+            }
+
+            $filters[] = $row;
         }
 
         return $filters;
