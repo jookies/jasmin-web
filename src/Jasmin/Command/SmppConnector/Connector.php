@@ -1,6 +1,6 @@
 <?php
 
-namespace JasminWeb\Jasmin\Command\Connector;
+namespace JasminWeb\Jasmin\Command\SmppConnector;
 
 use JasminWeb\Jasmin\Command\AddValidator;
 use JasminWeb\Jasmin\Command\BaseCommand;

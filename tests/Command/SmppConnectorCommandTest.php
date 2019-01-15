@@ -2,10 +2,10 @@
 
 namespace JasminWeb\Test\Command;
 
-use JasminWeb\Jasmin\Command\Connector\Connector;
+use JasminWeb\Jasmin\Command\SmppConnector\Connector;
 use JasminWeb\Test\BaseTest;
 
-class ConnectorCommandTest extends BaseTest
+class SmppConnectorCommandTest extends BaseTest
 {
     /**
      * @var Connector
