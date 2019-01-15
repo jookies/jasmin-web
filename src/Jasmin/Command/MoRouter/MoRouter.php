@@ -43,12 +43,25 @@ class MoRouter extends BaseCommand
                 $fixed_routers[] = $temp;
             }
 
-            $routers[] = [
-                'order'     => (int)$fixed_routers[0],
-                'type'      => $fixed_routers[1],
-                'connectors' => explode(',', $fixed_routers[2]),
-                'filters'   => isset($fixed_routers[3]) ? explode(',', $fixed_routers[3]) : [],
+            $row = [
+                'order'     => (int)array_shift($fixed_routers),
+                'type'      => (int)array_shift($fixed_routers),
+                'connectors' => [],
+                'filters'   => [],
             ];
+
+            foreach ($fixed_routers as $temp) {
+                $temp = str_replace(',', '', $temp);
+                if (false !== strpos($temp, 'http') || false !== strpos($temp, 'smpps')) {
+                    $row['connectors'][] = $temp;
+                }
+
+                if (false !== strpos($temp, '<')) {
+                    $row['filters'][] = $temp;
+                }
+            }
+
+            $routers[] = $row;
         }
 
         return $routers;

@@ -30,7 +30,7 @@ class MtRouter extends BaseCommand
         foreach ($exploded as $expl) {
             $router = trim($expl);
 
-            $ff = strstr($expl, 'Total MO Routes:', true);
+            $ff = strstr($expl, 'Total MT Routes:', true);
             if (!empty($ff)) {
                 $router = trim($ff);
             }
@@ -43,13 +43,31 @@ class MtRouter extends BaseCommand
                 $fixed_routers[] = $temp;
             }
 
-            $routers[] = [
-                'order'     => (int)$fixed_routers[0],
-                'type'      => $fixed_routers[1],
-                'rate'      => (float)$fixed_routers[2],
-                'connectors' => explode(',', $fixed_routers[3]),
-                'filters'   => isset($fixed_routers[4]) ? explode(',', $fixed_routers[4]) : [],
+            $row = [
+                'order'     => (int)array_shift($fixed_routers),
+                'type'      => array_shift($fixed_routers),
+                'rate'      => (float)array_shift($fixed_routers),
+                'connectors' => [],
+                'filters' => []
             ];
+
+            if (false !== strpos($el = current($fixed_routers), '(!)')) {
+                $row['rate'] .= ' ' . $el;
+                array_shift($fixed_routers);
+            }
+
+            foreach ($fixed_routers as $temp) {
+                $temp = str_replace(',', '', $temp);
+                if (false !== strpos($temp, 'smppc')) {
+                    $row['connectors'][] = $temp;
+                }
+
+                if (false !== strpos($temp, '<')) {
+                    $row['filters'][] = $temp;
+                }
+            }
+
+            $routers[] = $row;
         }
 
         return $routers;
