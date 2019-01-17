@@ -35,13 +35,8 @@ class MtRouter extends BaseCommand
                 $router = trim($ff);
             }
 
-            $router = explode(' ', $router);
-            $router = array_filter($router, 'strlen');
-
-            $fixed_routers = [];
-            foreach ($router as $temp) {
-                $fixed_routers[] = $temp;
-            }
+            $router = preg_replace(['/\s{2,}/', '/(<\w)(\s)?/'], [' ','$1'], $router);
+            $fixed_routers = explode(' ', $router);
 
             $row = [
                 'order'     => (int)array_shift($fixed_routers),
@@ -52,7 +47,6 @@ class MtRouter extends BaseCommand
             ];
 
             if (false !== strpos($el = current($fixed_routers), '(!)')) {
-                $row['rate'] .= ' ' . $el;
                 array_shift($fixed_routers);
             }
 
