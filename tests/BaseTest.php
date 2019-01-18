@@ -15,7 +15,7 @@ class BaseTest extends TestCase
      */
     protected function getConnection(): SocketConnection
     {
-        return SocketConnection::init($this->getHost(), $this->getPort());
+        return SocketConnection::init($this->getHost(), $this->getPort(), 50000);
     }
 
     /**

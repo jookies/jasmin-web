@@ -4,15 +4,18 @@ namespace JasminWeb\Jasmin\Command\SmppConnector;
 
 use JasminWeb\Jasmin\Command\AddValidator;
 use JasminWeb\Jasmin\Command\BaseCommand;
+use JasminWeb\Jasmin\Command\ChangeStateTrait;
 
 class Connector extends BaseCommand
 {
+    use ChangeStateTrait;
+
     /**
      * @return AddValidator
      */
     protected function getAddValidator(): AddValidator
     {
-        // TODO: Implement getAddValidator() method.
+        return new SmppConnectorAddValidator();
     }
 
     protected function getName(): string
@@ -44,14 +47,36 @@ class Connector extends BaseCommand
             }
 
             $connector['cid'] = $fixed_row[0];
-            $connector['status'] = $fixed_row[1];
+            $connector['service'] = $fixed_row[1];
             $connector['session'] = $fixed_row[2];
-            $connector['starts'] = $fixed_row[3] ?? 0;
-            $connector['stops'] = $fixed_row[4] ?? 0;
+            $connector['starts'] = (int) ($fixed_row[3] ?? 0);
+            $connector['stops'] = (int) ($fixed_row[4] ?? 0);
 
             $connectors[] = $connector;
         }
 
         return $connectors;
+    }
+
+    /**
+     * @param string $key
+     * @return bool
+     * @throws \JasminWeb\Exception\ConnectorException
+     */
+    public function enable(string $key): bool
+    {
+        $r = $this->session->runCommand($this->getName() . ' -1 ' . $key);
+        return $this->parseResult($r);
+    }
+
+    /**
+     * @param string $key
+     * @return bool
+     * @throws \JasminWeb\Exception\ConnectorException
+     */
+    public function disable(string $key)
+    {
+        $r = $this->session->runCommand($this->getName() . ' -0 ' . $key);
+        return $this->parseResult($r);
     }
 }

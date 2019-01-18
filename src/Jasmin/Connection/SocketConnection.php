@@ -10,7 +10,7 @@ class SocketConnection
      * Time for sleeping between command
      * @var int
      */
-    const DEFAULT_SLEEP_TIME = 5000;
+    const DEFAULT_SLEEP_TIME = 10000;
     const LOGIN_SLEEP_TIME = 100000;
     const DEFAULT_BUFFER_SIZE = 2048;
 

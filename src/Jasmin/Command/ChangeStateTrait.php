@@ -2,7 +2,7 @@
 
 namespace JasminWeb\Jasmin\Command;
 
-trait DisableTrait
+trait ChangeStateTrait
 {
     /**
      * @param string $key
@@ -11,7 +11,7 @@ trait DisableTrait
     public function enable(string $key): bool
     {
         $r = $this->session->runCommand($this->getName() . ' -e ' . $key);
-        return $this->parseResult($r, 1);
+        return $this->parseResult($r);
     }
 
     /**
@@ -21,16 +21,15 @@ trait DisableTrait
     public function disable(string $key): bool
     {
         $r = $this->session->runCommand($this->getName() . ' -d ' . $key);
-        return $this->parseResult($r, 0);
+        return $this->parseResult($r);
     }
 
     /**
      * @param string $result
-     * @param int $mode
      * @return bool
      */
-    private function parseResult(string $result, int $mode): bool
+    private function parseResult(string $result): bool
     {
-        return false !== strpos($result, 'Successfully ' . ($mode ? 'enabled' : 'disabled'));
+        return false !== strpos($result, 'Successfully');
     }
 }
