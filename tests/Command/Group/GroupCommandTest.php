@@ -15,6 +15,11 @@ class GroupCommandTest extends BaseTest
     private $session;
 
     /**
+     * @var Group
+     */
+    protected $group;
+
+    /**
      * @var string
      */
     protected $gid = 'jTestG1';
@@ -31,6 +36,8 @@ class GroupCommandTest extends BaseTest
         } else {
             $this->session = $this->getSessionMock();
         }
+
+        $this->group = new Group($this->session);
     }
 
     /**
@@ -46,9 +53,7 @@ STR;
             $this->session->method('runCommand')->willReturn($listStr);
         }
 
-        $group = new Group($this->session);
-        $list = $group->all();
-        $this->assertEmpty($list);
+        $this->assertEmpty($this->group->all());
     }
 
     /**
@@ -62,9 +67,8 @@ STR;
             $this->session->method('runCommand')->willReturn('Successfully added');
         }
 
-        $group = new Group($this->session);
         $errorStr = '';
-        $this->assertTrue($group->add(['gid' => $this->gid], $errorStr), $errorStr);
+        $this->assertTrue($this->group->add(['gid' => $this->gid], $errorStr), $errorStr);
     }
 
     /**
@@ -83,8 +87,7 @@ STR;
             $this->session->method('runCommand')->willReturn($listStr);
         }
 
-        $group = new Group($this->session);
-        $list = $group->all();
+        $list = $this->group->all();
         $this->assertCount(1, $list);
         $row = array_shift($list);
         $this->assertArrayHasKey('gid', $row);
@@ -100,8 +103,7 @@ STR;
             $this->session->method('runCommand')->willReturn('Successfully disabled');
         }
 
-        $group = new Group($this->session);
-        $this->assertTrue($group->disable($this->gid));
+        $this->assertTrue($this->group->disable($this->gid));
     }
 
     /**
@@ -121,8 +123,7 @@ STR;
             $this->session->method('runCommand')->willReturn($listStr);
         }
 
-        $group = new Group($this->session);
-        $groups = $group->all();
+        $groups = $this->group->all();
         $this->assertStringContainsString('!', $groups[0]['gid']);
     }
 
@@ -135,8 +136,7 @@ STR;
             $this->session->method('runCommand')->willReturn('Successfully enabled');
         }
 
-        $group = new Group($this->session);
-        $this->assertTrue($group->enable($this->gid));
+        $this->assertTrue($this->group->enable($this->gid));
     }
 
     /**
@@ -156,8 +156,7 @@ STR;
             $this->session->method('runCommand')->willReturn($listStr);
         }
 
-        $group = new Group($this->session);
-        $groups = $group->all();
+        $groups = $this->group->all();
         $this->assertStringNotContainsString('!', $groups[0]['gid']);
     }
 
@@ -172,9 +171,7 @@ STR;
             $this->session->method('runCommand')->willReturn('Successfully removed');
         }
 
-        $group = new Group($this->session);
-        $this->assertTrue($group->remove($this->gid));
-        $this->assertCount(0, $group->all());
+        $this->assertTrue($this->group->remove($this->gid));
 
         $this->testEmptyList();
     }
