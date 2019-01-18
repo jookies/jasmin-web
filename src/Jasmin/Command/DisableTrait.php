@@ -11,7 +11,7 @@ trait DisableTrait
     public function enable(string $key): bool
     {
         $r = $this->session->runCommand($this->getName() . ' -e ' . $key);
-        return $this->parseResult($r);
+        return $this->parseResult($r, 1);
     }
 
     /**
@@ -21,15 +21,16 @@ trait DisableTrait
     public function disable(string $key): bool
     {
         $r = $this->session->runCommand($this->getName() . ' -d ' . $key);
-        return $this->parseResult($r);
+        return $this->parseResult($r, 0);
     }
 
     /**
      * @param string $result
+     * @param int $mode
      * @return bool
      */
-    private function parseResult(string $result): bool
+    private function parseResult(string $result, int $mode): bool
     {
-        return false !== strpos($result, 'Successfully');
+        return false !== strpos($result, 'Successfully ' . ($mode ? 'enabled' : 'disabled'));
     }
 }

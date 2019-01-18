@@ -7,6 +7,9 @@ use JasminWeb\Test\BaseTest;
 
 class SessionTest extends BaseTest
 {
+    /**
+     * @throws \JasminWeb\Exception\ConnectionException
+     */
     public function testInitWrongUserAndPassword()
     {
         $connection = $this->getConnection();
@@ -14,9 +17,12 @@ class SessionTest extends BaseTest
         Session::init('test', 'test', $connection);
     }
 
+    /**
+     * @throws \JasminWeb\Exception\ConnectionException
+     */
     public function testSuccessInit()
     {
-        $connection = $this->getConnection();
-        $this->assertNotNull(Session::init($this->getPassword(), $this->getUsername(), $connection));
+        $session = $this->isRealJasminServer() ? $this->getSession() : $this->getSessionMock();
+        $this->assertNotNull($session);
     }
 }

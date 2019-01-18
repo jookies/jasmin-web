@@ -32,11 +32,12 @@ class SocketConnectionTest extends BaseTest
         SocketConnection::init((string) $host, (int) $port);
     }
 
+    /**
+     * @throws ConnectionException
+     */
     public function testSuccessInit()
     {
-        $host = $this->getHost();
-        $port = $this->getPort();
-
-        $this->assertNotNull(SocketConnection::init($host, $port));
+        $socket = $this->isRealJasminServer() ? $this->getConnection() : $this->getConnectionMock();
+        $this->assertNotNull($socket);
     }
 }
