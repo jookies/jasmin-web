@@ -225,6 +225,7 @@ STR;
         }
 
         $this->assertTrue($this->user->remove($this->uid));
+        (new Group($this->session))->remove($this->gid);
 
         $this->testEmptyList();
     }
