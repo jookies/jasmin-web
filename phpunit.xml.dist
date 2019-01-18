@@ -24,6 +24,9 @@
         <testsuite name="Command/User">
             <directory>tests/Command/User</directory>
         </testsuite>
+        <testsuite name="Command/Smpp">
+            <directory>tests/Command/SmppConnector</directory>
+        </testsuite>
     </testsuites>
 
     <filter>
