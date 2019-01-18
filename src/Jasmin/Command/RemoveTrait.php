@@ -11,6 +11,6 @@ trait RemoveTrait
     public function remove(string $key): bool
     {
         $result = $this->session->runCommand($this->getName() . ' -r ' . $key);
-        return false !== stripos($result, 'successfully removed');
+        return false !== stripos($result, 'successfully');
     }
 }

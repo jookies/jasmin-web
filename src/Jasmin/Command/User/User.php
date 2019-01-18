@@ -4,13 +4,13 @@ namespace JasminWeb\Jasmin\Command\User;
 
 use JasminWeb\Jasmin\Command\AddValidator;
 use JasminWeb\Jasmin\Command\BaseCommand;
-use JasminWeb\Jasmin\Command\DisableTrait;
+use JasminWeb\Jasmin\Command\ChangeStateTrait;
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
 
 class User extends BaseCommand
 {
-    use DisableTrait;
+    use ChangeStateTrait;
 
     /**
      * @return AddValidator

@@ -2,7 +2,7 @@
 
 namespace JasminWeb\Jasmin\Command;
 
-trait DisableTrait
+trait ChangeStateTrait
 {
     /**
      * @param string $key

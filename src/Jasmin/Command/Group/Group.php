@@ -4,11 +4,11 @@ namespace JasminWeb\Jasmin\Command\Group;
 
 use JasminWeb\Jasmin\Command\AddValidator;
 use JasminWeb\Jasmin\Command\BaseCommand;
-use JasminWeb\Jasmin\Command\DisableTrait;
+use JasminWeb\Jasmin\Command\ChangeStateTrait;
 
 class Group extends BaseCommand
 {
-    use DisableTrait;
+    use ChangeStateTrait;
 
     protected function getName(): string
     {

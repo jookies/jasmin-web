@@ -1,26 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-        <!-- https://phpunit.de/manual/current/en/appendixes.configuration.html -->
+<!-- https://phpunit.de/manual/current/en/appendixes.configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.1/phpunit.xsd"
          backupGlobals="false"
          colors="true"
          bootstrap="vendor/autoload.php"
 >
-<php>
-    <ini name="error_reporting" value="-1" />
-    <env name="SHELL_VERBOSITY" value="-1" />
-</php>
+    <php>
+        <ini name="error_reporting" value="-1"/>
+        <env name="SHELL_VERBOSITY" value="-1"/>
+        <!-- Uncomment if need run test on real server-->
+        <!--<env name="jasmin_real_server" value="1" />-->
+    </php>
 
-<testsuites>
-    <testsuite name="Project Test Suite">
-        <directory>tests</directory>
-    </testsuite>
-</testsuites>
+    <testsuites>
+        <testsuite name="Connection">
+            <directory>tests/Connection</directory>
+        </testsuite>
+        <testsuite name="Command/Group">
+            <directory>tests/Command/Group</directory>
+        </testsuite>
+        <testsuite name="Command/User">
+            <directory>tests/Command/User</directory>
+        </testsuite>
+        <testsuite name="Command/Smpp">
+            <directory>tests/Command/SmppConnector</directory>
+        </testsuite>
+    </testsuites>
 
-<filter>
-    <whitelist>
-        <directory>src</directory>
-    </whitelist>
-</filter>
+    <filter>
+        <whitelist>
+            <directory>src</directory>
+        </whitelist>
+    </filter>
 </phpunit>

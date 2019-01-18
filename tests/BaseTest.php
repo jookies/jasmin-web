@@ -4,26 +4,43 @@ namespace JasminWeb\Test;
 
 use JasminWeb\Jasmin\Connection\Session;
 use JasminWeb\Jasmin\Connection\SocketConnection;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class BaseTest extends TestCase
 {
     /**
-     * @return SocketConnection
+     * @return SocketConnection|MockObject
      * @throws \JasminWeb\Exception\ConnectionException
      */
     protected function getConnection(): SocketConnection
     {
-        return SocketConnection::init($this->getHost(), $this->getPort());
+        return SocketConnection::init($this->getHost(), $this->getPort(), 50000);
     }
 
     /**
-     * @return Session
+     * @return SocketConnection|MockObject
+     */
+    protected function getConnectionMock()
+    {
+        return $this->createMock(SocketConnection::class);
+    }
+
+    /**
+     * @return Session|MockObject
      * @throws \JasminWeb\Exception\ConnectionException
      */
     protected function getSession(): Session
     {
         return Session::init($this->getUsername(), $this->getPassword(), $this->getConnection());
+    }
+
+    /**
+     * @return Session|MockObject
+     */
+    public function getSessionMock()
+    {
+        return $this->createMock(Session::class);
     }
 
     /**
@@ -56,5 +73,10 @@ class BaseTest extends TestCase
     public function getPort(): int
     {
         return getenv('jasmin_admin_port') ?: 8990;
+    }
+
+    public function isRealJasminServer(): bool
+    {
+        return getenv('jasmin_real_server') ? true : false;
     }
 }
