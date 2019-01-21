@@ -4,7 +4,7 @@ namespace JasminWeb\Jasmin\Command;
 
 abstract class AddValidator
 {
-    private $errors = [];
+    protected $errors = [];
 
     /**
      * @return array

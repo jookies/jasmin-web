@@ -12,7 +12,7 @@ class Filter extends BaseCommand
      */
     protected function getAddValidator(): AddValidator
     {
-        // TODO: Implement getAddValidator() method.
+        return new FilterAddValidator();
     }
 
     protected function getName(): string

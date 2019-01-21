@@ -24,7 +24,7 @@ trait AddTrait
         }
 
         $result = $this->session->runCommand('ok');
-        if (false !== stripos($result, 'successfully added')) {
+        if (false !== stripos($result, 'successfully')) {
             return true;
         }
 

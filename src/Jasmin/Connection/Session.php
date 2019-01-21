@@ -63,4 +63,13 @@ class Session
 
         return $this->connection->read();
     }
+
+    /**
+     * @return bool|string
+     * @throws ConnectorException
+     */
+    public function persist()
+    {
+        return $this->runCommand('persist');
+    }
 }
