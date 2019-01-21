@@ -12,7 +12,13 @@ class SessionTest extends BaseTest
      */
     public function testInitWrongUserAndPassword()
     {
-        $connection = $this->getConnection();
+        if (!$this->isRealJasminServer()) {
+            $connection = $this->getConnectionMock();
+            $connection->method('read')->willReturn('Incorrect');
+        } else {
+            $connection = $this->getConnection();
+        }
+
         $this->expectException(\InvalidArgumentException::class);
         Session::init('test', 'test', $connection);
     }

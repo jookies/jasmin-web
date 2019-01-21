@@ -56,7 +56,16 @@ class SocketConnection
             throw new ConnectionException('Invalid server ip');
         }
 
+        $errno = $errstr = null;
+        set_error_handler(function ($_errno, $_errstr) use (&$errno, &$errstr) {
+            $errno = $_errno;
+            $errstr = $_errstr;
+        }, E_WARNING);
+
         $fp = fsockopen($host, $port, $errno, $errstr);
+
+        restore_error_handler();
+
         if (!$fp) {
             throw new ConnectionException('Unable open connection, errno: ' . $errno . ', errstr: ' . $errstr);
         }
