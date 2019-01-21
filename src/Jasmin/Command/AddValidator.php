@@ -1,8 +1,6 @@
 <?php
 
-
 namespace JasminWeb\Jasmin\Command;
-
 
 abstract class AddValidator
 {
@@ -20,10 +18,10 @@ abstract class AddValidator
     public function checkRequiredAttributes(array $data): bool
     {
         $required = $this->getRequiredAttributes();
-        foreach ($data as $key => $value) {
-            if (!in_array($key, $required, true)) {
-                $this->errors[$key] = 'Required';
-            }
+        $diff = array_diff($required, array_keys($data));
+
+        foreach ($diff as $item) {
+            $this->errors[$item] = 'Required';
         }
 
         return empty($this->errors);
