@@ -1,10 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace JasminWeb\Jasmin\Connection;
 
 use JasminWeb\Exception\ConnectorException;
+use JasminWeb\Jasmin\Command\CommandInterface;
+use JasminWeb\Jasmin\Response\Response;
 
-class Session
+class NewSession
 {
     /**
      * @var SocketConnection
@@ -21,9 +23,9 @@ class Session
      * @param string $password
      * @param SocketConnection $connection
      *
-     * @return Session
+     * @return self
      */
-    public static function init(string $username, string $password, SocketConnection $connection): Session
+    public static function init(string $username, string $password, SocketConnection $connection): self
     {
         //TODO Add more safety validation
         $username = trim($username);
@@ -47,25 +49,43 @@ class Session
     /**
      * @param string $command
      * @param bool $needWaitBeforeRead
-     * @return bool|string
+     * @return array
      *
      * @throws ConnectorException
      */
-    public function runCommand(string $command, bool $needWaitBeforeRead = false)
+    public function runCommand(CommandInterface $command): Response
     {
         if (!$this->connection->isAlive()) {
             throw new ConnectorException('Try execute command without open socket');
         }
 
-        $command = trim($command) . "\n";
+        if (!$command->validate()) {
+            throw new \RuntimeException('Validate error');
+        }
 
-        $this->connection->write($command, false);
+        $arguments = $command->getArguments();
 
-        if ($needWaitBeforeRead) {
+        $length = 0;
+
+        $initCommand = $command->getId() . ' ' . $command->getFlag() . PHP_EOL;
+
+        $length += strlen($initCommand);
+
+        $this->connection->write($initCommand);
+
+        foreach ($arguments as $key => $value) {
+            $str = $key . ' ' . $value . PHP_EOL;
+            $length += strlen($str);
+            $this->connection->write($str);
+        }
+
+        if ($command->isHeavy()) {
             $this->connection->wait();
         }
 
-        return $this->normalize($this->connection->read(), strlen($command));
+        $normalizedData = $this->normalize($this->connection->read(), $length);
+
+        return $command->parseResponse($normalizedData);
     }
 
     protected function normalize(string $string, int $length): string

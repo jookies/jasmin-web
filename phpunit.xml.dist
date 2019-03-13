@@ -10,13 +10,20 @@
     <php>
         <ini name="error_reporting" value="-1"/>
         <env name="SHELL_VERBOSITY" value="-1"/>
+        <env name="jasmin_admin_host" value="172.20.0.2"/>
+        <env name="jasmin_admin_port" value="8990"/>
+        <env name="jasmin_admin_username" value="artemy"/>
+        <env name="jasmin_admin_password" value="artemy"/>
         <!-- Uncomment if need run test on real server-->
-        <!--<env name="jasmin_real_server" value="1" />-->
+        <env name="jasmin_real_server" value="1" />
     </php>
 
     <testsuites>
         <testsuite name="Connection">
             <directory>tests/Connection</directory>
+        </testsuite>
+        <testsuite name="Command/Validator">
+            <directory>tests/Command/Validator</directory>
         </testsuite>
         <testsuite name="Command/Group">
             <directory>tests/Command/Group</directory>
@@ -27,8 +34,8 @@
         <testsuite name="Command/Smpp">
             <directory>tests/Command/SmppConnector</directory>
         </testsuite>
-        <testsuite name="Command/Validator">
-            <directory>tests/Command/Validator</directory>
+        <testsuite name="Command/Filter">
+            <directory>tests/Command/Filter</directory>
         </testsuite>
     </testsuites>
 

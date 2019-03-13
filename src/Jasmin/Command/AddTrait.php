@@ -23,7 +23,7 @@ trait AddTrait
             $this->session->runCommand($property_key . ' ' . $property_value);
         }
 
-        $result = $this->session->runCommand('ok');
+        $result = $this->session->runCommand('ok', $this->isHeavy());
         if (false !== stripos($result, 'successfully added')) {
             return true;
         }
@@ -36,4 +36,12 @@ trait AddTrait
      * @return AddValidator
      */
     abstract protected function getAddValidator(): AddValidator;
+
+    /**
+     * @return bool
+     */
+    protected function isHeavy(): bool
+    {
+        return false;
+    }
 }
