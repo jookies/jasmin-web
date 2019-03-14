@@ -65,7 +65,7 @@ class Connector extends BaseCommand
      */
     public function enable(string $key): bool
     {
-        $r = $this->session->runCommand($this->getName() . ' -1 ' . $key);
+        $r = $this->session->runCommand($this->getName() . ' -1 ' . $key , true);
         return $this->parseResult($r);
     }
 
@@ -76,7 +76,12 @@ class Connector extends BaseCommand
      */
     public function disable(string $key)
     {
-        $r = $this->session->runCommand($this->getName() . ' -0 ' . $key);
+        $r = $this->session->runCommand($this->getName() . ' -0 ' . $key, true);
         return $this->parseResult($r);
+    }
+
+    protected function isHeavy(): bool
+    {
+        return true;
     }
 }

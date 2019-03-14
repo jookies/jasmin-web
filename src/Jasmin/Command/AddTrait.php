@@ -36,4 +36,12 @@ trait AddTrait
      * @return AddValidator
      */
     abstract protected function getAddValidator(): AddValidator;
+
+    /**
+     * @return bool
+     */
+    protected function isHeavy(): bool
+    {
+        return false;
+    }
 }
