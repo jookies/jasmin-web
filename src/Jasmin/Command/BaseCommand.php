@@ -19,4 +19,6 @@ abstract class BaseCommand
     }
 
     abstract protected function getName(): string;
+
+    abstract protected function isHeavy(): bool;
 }

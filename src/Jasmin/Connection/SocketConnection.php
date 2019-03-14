@@ -10,7 +10,7 @@ class SocketConnection
      * Time for sleeping between command
      * @var int
      */
-    const DEFAULT_SLEEP_TIME = 500000; //half second
+    const DEFAULT_SLEEP_TIME = 50000;
 
     /**
      * @var resource

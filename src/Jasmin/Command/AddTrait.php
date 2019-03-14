@@ -17,13 +17,18 @@ trait AddTrait
             $errorStr = json_encode($validator->getErrors());
             return false;
         }
-        $this->session->runCommand($this->getName() . ' -a');
+
+        $command = $this->getName() . ' -a';
+        $command .= PHP_EOL;
 
         foreach ($data as $property_key => $property_value) {
-            $this->session->runCommand($property_key . ' ' . $property_value);
+            $command .= $property_key . ' ' . $property_value;
+            $command .= PHP_EOL;
         }
 
-        $result = $this->session->runCommand('ok');
+        $command .= 'ok' . PHP_EOL;
+
+        $result = $this->session->runCommand($command, $this->isHeavy());
         if (false !== stripos($result, 'successfully')) {
             return true;
         }
@@ -36,12 +41,4 @@ trait AddTrait
      * @return AddValidator
      */
     abstract protected function getAddValidator(): AddValidator;
-
-    /**
-     * @return bool
-     */
-    protected function isHeavy(): bool
-    {
-        return false;
-    }
 }

@@ -106,4 +106,9 @@ class User extends BaseCommand
 
         return $options;
     }
+
+    protected function isHeavy(): bool
+    {
+        return false;
+    }
 }

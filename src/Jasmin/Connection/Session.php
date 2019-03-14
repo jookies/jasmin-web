@@ -32,8 +32,8 @@ class Session
             throw new \InvalidArgumentException('Not set username or password');
         }
 
-        $connection->write("$username\n");
-        $connection->write("$password\n");
+        $connection->write($username . PHP_EOL);
+        $connection->write($password . PHP_EOL);
 //        $connection->write(chr(0));
 
         $result = $connection->read();
@@ -57,7 +57,7 @@ class Session
             throw new ConnectorException('Try execute command without open socket');
         }
 
-        $command = trim($command) . "\n";
+        $command = trim($command) . PHP_EOL;
 
         $this->connection->write($command);
 

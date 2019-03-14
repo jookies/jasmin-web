@@ -15,7 +15,7 @@ class BaseTest extends TestCase
      */
     protected function getConnection(): SocketConnection
     {
-        return SocketConnection::init($this->getHost(), $this->getPort(), 50000);
+        return SocketConnection::init($this->getHost(), $this->getPort(), $this->getWaitTime());
     }
 
     /**
@@ -78,5 +78,10 @@ class BaseTest extends TestCase
     public function isRealJasminServer(): bool
     {
         return getenv('jasmin_real_server') ? true : false;
+    }
+
+    public function getWaitTime(): int
+    {
+        return getenv('jasmin_read_write_wait_time') ?: 1000000;
     }
 }
