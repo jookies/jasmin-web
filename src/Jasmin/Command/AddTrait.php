@@ -23,8 +23,8 @@ trait AddTrait
             $this->session->runCommand($property_key . ' ' . $property_value);
         }
 
-        $result = $this->session->runCommand('ok', $this->isHeavy());
-        if (false !== stripos($result, 'successfully added')) {
+        $result = $this->session->runCommand('ok');
+        if (false !== stripos($result, 'successfully')) {
             return true;
         }
 
