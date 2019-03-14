@@ -10,7 +10,9 @@ class SocketConnection
      * Time for sleeping between command
      * @var int
      */
-    const DEFAULT_SLEEP_TIME = 500000; //half second
+    const DEFAULT_SLEEP_TIME = 10000;
+    const LOGIN_SLEEP_TIME = 100000;
+    const DEFAULT_BUFFER_SIZE = 2048;
 
     /**
      * @var resource
@@ -33,21 +35,18 @@ class SocketConnection
     {
         $this->fp = $fp;
         $this->sleepTime = $sleepTime;
-        $this->read();
     }
 
     /**
      * @param string $host
-     *
      * @param int $port
-     *
-     * @param int $waitTime
+     * @param int $sleepTime Time for sleeping between command
      *
      * @return SocketConnection
      *
      * @throws ConnectionException
      */
-    public static function init(string $host, int $port, int $waitTime = self::DEFAULT_SLEEP_TIME): SocketConnection
+    public static function init(string $host, int $port, int $sleepTime = self::DEFAULT_SLEEP_TIME): SocketConnection
     {
         if (!is_int($port)) {
             throw new ConnectionException('Invalid port');
@@ -57,42 +56,32 @@ class SocketConnection
             throw new ConnectionException('Invalid server ip');
         }
 
-        $start = -microtime(true);
+        $errno = $errstr = null;
+        set_error_handler(function ($_errno, $_errstr) use (&$errno, &$errstr) {
+            $errno = $_errno;
+            $errstr = $_errstr;
+        }, E_WARNING);
 
-        if (!$resource = @stream_socket_client("tcp://$host:$port", $errno, $errstr)) {
-            throw new \RuntimeException($errstr);
+        $fp = fsockopen($host, $port, $errno, $errstr);
+
+        restore_error_handler();
+
+        if (!$fp) {
+            throw new ConnectionException('Unable open connection, errno: ' . $errno . ', errstr: ' . $errstr);
         }
 
-        $start += microtime(true);
-        $start *= 1000;
-
-        $rwtimeout = (float) $start;
-        $rwtimeout = $rwtimeout > 0 ? $rwtimeout : -1;
-        $timeoutSeconds = floor($rwtimeout);
-        $timeoutUSeconds = ($rwtimeout - $timeoutSeconds) * 1000000;
-        stream_set_timeout($resource, $timeoutSeconds, $timeoutUSeconds);
-
-        return new self($resource, $waitTime  < self::DEFAULT_SLEEP_TIME ? self::DEFAULT_SLEEP_TIME : $waitTime);
+        return new self($fp, $sleepTime < self::DEFAULT_SLEEP_TIME ? self::DEFAULT_SLEEP_TIME : $sleepTime);
     }
 
     /**
      * @param string $str
-     * @throws \Exception
+     * @param bool $needSleep
      */
-    public function write(string $str)
+    public function write(string $str, bool $needSleep = true)
     {
-        while (($length = strlen($str)) > 0) {
-            $written = @fwrite($this->fp, $str);
-
-            if ($length === $written) {
-                return;
-            }
-
-            if ($written === false || $written === 0) {
-                throw new \RuntimeException('Error while writing bytes to the server.');
-            }
-
-            $str = substr($str, $written);
+        fwrite($this->fp, $str);
+        if ($needSleep) {
+            usleep($this->sleepTime);
         }
     }
 
@@ -102,12 +91,11 @@ class SocketConnection
      */
     public function read(int $bytes = null)
     {
-        return fread($this->fp, $bytes ?? 8192);
+        return str_replace('jcli: >', '', fread($this->fp, $bytes ?? self::DEFAULT_BUFFER_SIZE));
     }
 
     public function disconnect()
     {
-        fclose($this->fp);
         $this->fp = null;
     }
 
@@ -117,10 +105,5 @@ class SocketConnection
     public function isAlive(): bool
     {
         return $this->fp !== null;
-    }
-
-    public function wait()
-    {
-        usleep($this->sleepTime);
     }
 }
