@@ -10,7 +10,7 @@ class SocketConnection
      * Time for sleeping between command
      * @var int
      */
-    const DEFAULT_SLEEP_TIME = 1000000; //one second
+    const DEFAULT_SLEEP_TIME = 500000; //half second
 
     /**
      * @var resource
@@ -84,8 +84,6 @@ class SocketConnection
         while (($length = strlen($str)) > 0) {
             $written = @fwrite($this->fp, $str);
 
-            $this->logWrite($str, $written);
-
             if ($length === $written) {
                 return;
             }
@@ -104,11 +102,7 @@ class SocketConnection
      */
     public function read(int $bytes = null)
     {
-        $read = fread($this->fp, $bytes ?? 8192);
-        $msg = 'Read: |' . $read . ' |' . PHP_EOL;
-        $msg .= '---' . PHP_EOL;
-        file_put_contents(__DIR__ . '/log', $msg, FILE_APPEND);
-        return $read;
+        return fread($this->fp, $bytes ?? 8192);
     }
 
     public function disconnect()
@@ -123,13 +117,6 @@ class SocketConnection
     public function isAlive(): bool
     {
         return $this->fp !== null;
-    }
-
-    private function logWrite(string $str, $written)
-    {
-        $msg = 'Write: |' . trim(substr($str, 0, $written)) . '| ' . PHP_EOL;
-        $msg .= '---' . PHP_EOL;
-        file_put_contents(__DIR__ . '/log', $msg, FILE_APPEND);
     }
 
     public function wait()

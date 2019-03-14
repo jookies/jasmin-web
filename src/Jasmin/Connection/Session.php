@@ -32,8 +32,8 @@ class Session
             throw new \InvalidArgumentException('Not set username or password');
         }
 
-        $connection->write("$username\r");
-        $connection->write("$password\r\n");
+        $connection->write("$username\n");
+        $connection->write("$password\n");
 //        $connection->write(chr(0));
 
         $result = $connection->read();
@@ -59,7 +59,7 @@ class Session
 
         $command = trim($command) . "\n";
 
-        $this->connection->write($command, false);
+        $this->connection->write($command);
 
         if ($needWaitBeforeRead) {
             $this->connection->wait();
@@ -71,5 +71,15 @@ class Session
     protected function normalize(string $string, int $length): string
     {
         return substr(str_replace('jcli :', '', trim($string)), $length);
+    }
+
+    public function persist(string $profile = 'jcli-prod')
+    {
+        $this->runCommand('persist ' . $profile);
+    }
+
+    public function load(string $profile = 'jcli-prod')
+    {
+        $this->runCommand('load ' . $profile);
     }
 }
