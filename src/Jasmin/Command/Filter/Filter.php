@@ -62,4 +62,9 @@ class Filter extends BaseCommand
 
         return $filters;
     }
+
+    protected function isHeavy(): bool
+    {
+        return false;
+    }
 }

@@ -43,4 +43,9 @@ class Group extends BaseCommand
     {
         return new GroupAddValidator();
     }
+
+    protected function isHeavy(): bool
+    {
+        return false;
+    }
 }
