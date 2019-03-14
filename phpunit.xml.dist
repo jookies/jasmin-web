@@ -41,6 +41,9 @@
         <testsuite name="Command/Http">
             <directory>tests/Command/HttpConnector</directory>
         </testsuite>
+        <testsuite name="Command/MoRouter">
+            <directory>tests/Command/MoRouter</directory>
+        </testsuite>
     </testsuites>
 
     <filter>

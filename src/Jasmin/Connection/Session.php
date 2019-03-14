@@ -11,42 +11,70 @@ class Session
      */
     private $connection;
 
-    private function __construct(SocketConnection $connection)
+    /**
+     * Name of profile for persist and load commands
+     *
+     * @var string
+     */
+    protected $profile;
+
+    /**
+     * Session constructor.
+     *
+     * @param SocketConnection $connection
+     *
+     * @param string $profile
+     */
+    private function __construct(SocketConnection $connection, string $profile)
     {
         $this->connection = $connection;
+        $this->profile = $profile;
     }
 
     /**
      * @param string $username
+     *
      * @param string $password
+     *
      * @param SocketConnection $connection
      *
+     * @param string $profile
+     *
      * @return Session
+     *
+     * @throws \Exception
      */
-    public static function init(string $username, string $password, SocketConnection $connection): Session
-    {
+    public static function init(
+        string $username,
+        string $password,
+        SocketConnection $connection,
+        string $profile = 'jcli-prod'
+    ): Session {
         //TODO Add more safety validation
         $username = trim($username);
         $password = trim($password);
+
         if (empty($username) || empty($password)) {
             throw new \InvalidArgumentException('Not set username or password');
         }
 
         $connection->write($username . PHP_EOL);
         $connection->write($password . PHP_EOL);
-//        $connection->write(chr(0));
 
         $result = $connection->read();
+
         if (false !== strpos($result, 'Incorrect')) {
             throw new \InvalidArgumentException('Incorrect Username/Password');
         }
 
-        return new self($connection);
+        return new self($connection, $profile);
     }
 
     /**
      * @param string $command
+     *
      * @param bool $needWaitBeforeRead
+     *
      * @return bool|string
      *
      * @throws ConnectorException
@@ -68,18 +96,37 @@ class Session
         return $this->normalize($this->connection->read(), strlen($command));
     }
 
+    /**
+     * Writes $length bites and remove trash from socket output
+     *
+     * @param string $string
+     *
+     * @param int $length
+     *
+     * @return string
+     */
     protected function normalize(string $string, int $length): string
     {
         return substr(str_replace('jcli :', '', trim($string)), $length);
     }
 
-    public function persist(string $profile = 'jcli-prod')
+    /**
+     * Persist command
+     *
+     * @throws ConnectorException
+     */
+    public function persist(): void
     {
-        $this->runCommand('persist ' . $profile);
+        $this->runCommand('persist ' . $this->profile);
     }
 
-    public function load(string $profile = 'jcli-prod')
+    /**
+     * Load command
+     *
+     * @throws ConnectorException
+     */
+    public function load(): void
     {
-        $this->runCommand('load ' . $profile);
+        $this->runCommand('load ' . $this->profile);
     }
 }

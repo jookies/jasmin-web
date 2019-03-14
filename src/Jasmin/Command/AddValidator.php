@@ -24,7 +24,7 @@ abstract class AddValidator
             $this->errors[$item] = 'Required';
         }
 
-        return empty($this->errors);
+        return $this->hasErrors();
     }
 
     /**
@@ -33,5 +33,13 @@ abstract class AddValidator
     public function getErrors(): array
     {
         return $this->errors;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasErrors(): bool
+    {
+        return empty($this->errors);
     }
 }

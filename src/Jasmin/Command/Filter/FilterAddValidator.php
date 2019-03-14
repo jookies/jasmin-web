@@ -3,8 +3,9 @@
 namespace JasminWeb\Jasmin\Command\Filter;
 
 use JasminWeb\Jasmin\Command\AddValidator;
+use JasminWeb\Jasmin\Command\InternalAddValidator;
 
-class FilterAddValidator extends AddValidator
+class FilterAddValidator extends InternalAddValidator
 {
     /**
      * @return array
@@ -14,37 +15,37 @@ class FilterAddValidator extends AddValidator
         return ['fid', 'type'];
     }
 
-    public function checkRequiredAttributes(array $data): bool
-    {
-        if (!parent::checkRequiredAttributes($data)) {
-            return false;
-        }
-
-        if (!$validator = $this->getInternalValidator($data['type'])) {
-            $this->errors['type'] = 'Unknown type';
-            return false;
-        }
-
-        if (!$validator->checkRequiredAttributes($data)) {
-            $this->errors = $validator->getErrors();
-        }
-
-        return empty($this->errors);
-    }
-
     /**
-     * @param string $type
-     * @return AddValidator|null
+     * {@inheritdoc}
      */
-    private function getInternalValidator(string $type)
+    protected function resolveValidator(array $data): ?AddValidator
     {
         $validator = null;
-        switch (strtolower($type)) {
-            case 'userfilter':
+        switch (strtolower($data['type'])) {
+            case Filter::USER:
                 $validator = new UserFilterAddValidator();
+                break;
+            case Filter::TRANSPARENT:
+                $validator = new class extends AddValidator {
+                    /**
+                     * @return array
+                     */
+                    public function getRequiredAttributes(): array
+                    {
+                        return [];
+                    }
+                };
                 break;
         }
 
         return $validator;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function addResolveError(array $data): void
+    {
+        $this->errors['type'] = 'Unknown type of filter ' . $data['type'];
     }
 }

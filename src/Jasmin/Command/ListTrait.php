@@ -6,7 +6,6 @@ trait ListTrait
 {
     /**
      * @return array
-     * @throws \JasminWeb\Exception\ConnectorException
      */
     public function all(): array
     {
@@ -20,6 +19,7 @@ trait ListTrait
 
     /**
      * @param array $exploded
+     *
      * @return array
      */
     abstract protected function parseList(array $exploded): array;

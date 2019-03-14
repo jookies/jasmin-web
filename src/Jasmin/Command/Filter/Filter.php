@@ -7,6 +7,9 @@ use JasminWeb\Jasmin\Command\BaseCommand;
 
 class Filter extends BaseCommand
 {
+    public const TRANSPARENT = 'transparentfilter';
+    public const USER = 'userfilter';
+
     /**
      * @return AddValidator
      */
@@ -15,6 +18,9 @@ class Filter extends BaseCommand
         return new FilterAddValidator();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getName(): string
     {
         return 'filter';
@@ -63,8 +69,11 @@ class Filter extends BaseCommand
         return $filters;
     }
 
-    protected function isHeavy(): bool
+    /**
+     * {@inheritdoc}
+     */
+    protected function isNeedPersist(): bool
     {
-        return false;
+        return true;
     }
 }

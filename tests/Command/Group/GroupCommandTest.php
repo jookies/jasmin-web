@@ -40,10 +40,7 @@ class GroupCommandTest extends BaseTest
         $this->group = new Group($this->session);
     }
 
-    /**
-     * @throws \JasminWeb\Exception\ConnectorException
-     */
-    public function testEmptyList()
+    public function testEmptyList(): void
     {
         if (!$this->isRealJasminServer()) {
             $listStr = <<<STR
@@ -58,10 +55,8 @@ STR;
 
     /**
      * @depends testEmptyList
-     *
-     * @throws \JasminWeb\Exception\ConnectorException
      */
-    public function testAddGroup()
+    public function testAddGroup(): void
     {
         if (!$this->isRealJasminServer()) {
             $this->session->method('runCommand')->willReturn('Successfully added');
@@ -73,10 +68,8 @@ STR;
 
     /**
      * @depends testAddGroup
-     *
-     * @throws \JasminWeb\Exception\ConnectorException
      */
-    public function testListAfterAdd()
+    public function testListAfterAdd(): void
     {
         if (!$this->isRealJasminServer()) {
             $listStr = <<<STR
@@ -97,7 +90,7 @@ STR;
     /**
      * @depends testListAfterAdd
      */
-    public function testDisableGroup()
+    public function testDisableGroup(): void
     {
         if (!$this->isRealJasminServer()) {
             $this->session->method('runCommand')->willReturn('Successfully disabled');
@@ -111,7 +104,7 @@ STR;
      *
      * @throws \JasminWeb\Exception\ConnectorException
      */
-    public function testIsDisabledGroup()
+    public function testIsDisabledGroup(): void
     {
         if (!$this->isRealJasminServer()) {
             $listStr = <<<STR
@@ -130,7 +123,7 @@ STR;
     /**
      * @depends testIsDisabledGroup
      */
-    public function testEnableGroup()
+    public function testEnableGroup(): void
     {
         if (!$this->isRealJasminServer()) {
             $this->session->method('runCommand')->willReturn('Successfully enabled');
@@ -144,7 +137,7 @@ STR;
      *
      * @throws \JasminWeb\Exception\ConnectorException
      */
-    public function testIsEnabledGroup()
+    public function testIsEnabledGroup(): void
     {
         if (!$this->isRealJasminServer()) {
             $listStr = <<<STR
@@ -165,7 +158,7 @@ STR;
      *
      * @throws \JasminWeb\Exception\ConnectorException
      */
-    public function testRemoveGroup()
+    public function testRemoveGroup(): void
     {
         if (!$this->isRealJasminServer()) {
             $this->session->method('runCommand')->willReturn('Successfully removed');

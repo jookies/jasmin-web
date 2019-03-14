@@ -6,9 +6,10 @@ trait AddTrait
 {
     /**
      * @param array $data
+     *
      * @param string $errorStr
+     *
      * @return bool
-     * @throws \JasminWeb\Exception\ConnectorException
      */
     public function add(array $data, string &$errorStr = ''): bool
     {
@@ -17,6 +18,8 @@ trait AddTrait
             $errorStr = json_encode($validator->getErrors());
             return false;
         }
+
+        $data = $this->prepareAttributes($data);
 
         $command = $this->getName() . ' -a';
         $command .= PHP_EOL;
@@ -30,6 +33,10 @@ trait AddTrait
 
         $result = $this->session->runCommand($command, $this->isHeavy());
         if (false !== stripos($result, 'successfully')) {
+            if ($this->isNeedPersist()) {
+                $this->session->persist();
+            }
+
             return true;
         }
 
@@ -41,4 +48,16 @@ trait AddTrait
      * @return AddValidator
      */
     abstract protected function getAddValidator(): AddValidator;
+
+    /**
+     * Return mutable version of data
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    protected function prepareAttributes(array $data): array
+    {
+        return $data;
+    }
 }

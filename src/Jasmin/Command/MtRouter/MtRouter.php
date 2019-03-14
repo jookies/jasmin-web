@@ -7,12 +7,15 @@ use JasminWeb\Jasmin\Command\BaseCommand;
 
 class MtRouter extends BaseCommand
 {
+    public const STATIC = 'staticmtroute';
+    public const DEFAULT = 'defaultroute';
+
     /**
      * @return AddValidator
      */
     protected function getAddValidator(): AddValidator
     {
-        // TODO: Implement getAddValidator() method.
+        return new MtRouterBaseValidator();
     }
 
     protected function getName(): string
@@ -67,8 +70,27 @@ class MtRouter extends BaseCommand
         return $routers;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function isHeavy(): bool
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prepareAttributes(array $data): array
+    {
+        if (isset($data['filters']) && !empty($data['filters'])) {
+            $data['filters'] = implode(';', $data['filters']);
+        }
+
+        if (isset($data['connectors']) && !empty($data['filters'])) {
+            $data['connectors'] = implode(';', $data['connectors']);
+        }
+
+        return $data;
     }
 }

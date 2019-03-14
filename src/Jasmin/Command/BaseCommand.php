@@ -13,12 +13,38 @@ abstract class BaseCommand
      */
     protected $session;
 
+    /**
+     * BaseCommand constructor.
+     *
+     * @param Session $session
+     */
     public function __construct(Session $session)
     {
         $this->session = $session;
     }
 
+    /**
+     * @return string
+     */
     abstract protected function getName(): string;
 
-    abstract protected function isHeavy(): bool;
+    /**
+     * For heavy commands, if return true, connection will wait some period
+     *
+     * @return bool
+     */
+    protected function isHeavy(): bool
+    {
+        return false;
+    }
+
+    /**
+     * If need execute persist command after this
+     *
+     * @return bool
+     */
+    protected function isNeedPersist(): bool
+    {
+        return false;
+    }
 }

@@ -7,10 +7,11 @@ use JasminWeb\Exception\ConnectionException;
 class SocketConnection
 {
     /**
-     * Time for sleeping between command
+     * Default time for sleeping between command
+     *
      * @var int
      */
-    const DEFAULT_SLEEP_TIME = 50000;
+    public const DEFAULT_SLEEP_TIME = 50000;
 
     /**
      * @var resource
@@ -77,9 +78,10 @@ class SocketConnection
 
     /**
      * @param string $str
+     *
      * @throws \Exception
      */
-    public function write(string $str)
+    public function write(string $str): void
     {
         while (($length = strlen($str)) > 0) {
             $written = @fwrite($this->fp, $str);
@@ -98,6 +100,7 @@ class SocketConnection
 
     /**
      * @param int|null $bytes
+     *
      * @return bool|string
      */
     public function read(int $bytes = null)
@@ -105,7 +108,10 @@ class SocketConnection
         return fread($this->fp, $bytes ?? 8192);
     }
 
-    public function disconnect()
+    /**
+     * @return void
+     */
+    public function disconnect(): void
     {
         fclose($this->fp);
         $this->fp = null;
@@ -119,7 +125,10 @@ class SocketConnection
         return $this->fp !== null;
     }
 
-    public function wait()
+    /**
+     * @return void
+     */
+    public function wait(): void
     {
         usleep($this->sleepTime);
     }

@@ -32,10 +32,7 @@ class FilterCommandTest extends BaseTest
         $this->filter = new Filter($this->session);
     }
 
-    /**
-     * @throws \JasminWeb\Exception\ConnectorException
-     */
-    public function testEmptyList()
+    public function testEmptyList(): void
     {
         if (!$this->isRealJasminServer()) {
             $listStr = <<<STR
@@ -46,13 +43,14 @@ STR;
         }
 
         $list = $this->filter->all();
+
         $this->assertEmpty($list);
     }
 
     /**
      * @depends testEmptyList
      */
-    public function testFakeNonEmptyList()
+    public function testFakeNonEmptyList(): void
     {
         if (!$this->isRealJasminServer()) {
             $listStr = <<<STR
@@ -100,9 +98,8 @@ STR;
 
     /**
      * @depends testFakeNonEmptyList
-     * @throws \JasminWeb\Exception\ConnectorException
      */
-    public function testAddUserFilter()
+    public function testAddUserFilter(): void
     {
         if (!$this->isRealJasminServer()) {
             $this->session->method('runCommand')->willReturn('Successfully added');
@@ -125,14 +122,12 @@ STR;
             'fid' => 'jTestF1',
             'uid' => 'jTestU1'
         ], $errstr), $errstr);
-
-        $this->session->persist();
     }
 
     /**
      * @depends testAddUserFilter
      */
-    public function testListAfterAddUserFilter()
+    public function testListAfterAddUserFilter(): void
     {
         if (!$this->isRealJasminServer()) {
             $listStr = <<<STR
@@ -154,9 +149,8 @@ STR;
 
     /**
      * @depends testListAfterAddUserFilter
-     * @throws \JasminWeb\Exception\ConnectorException
      */
-    public function testRemoveFilter()
+    public function testRemoveFilter(): void
     {
         if (!$this->isRealJasminServer()) {
             $this->session->method('runCommand')->willReturn('Successfully');
@@ -166,7 +160,5 @@ STR;
         $this->testEmptyList();
 
         (new Group($this->session))->remove('jTestG1');
-
-        $this->session->persist();
     }
 }

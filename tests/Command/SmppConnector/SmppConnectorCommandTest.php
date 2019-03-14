@@ -41,7 +41,7 @@ class SmppConnectorCommandTest extends BaseTest
     /**
      * @throws \JasminWeb\Exception\ConnectorException
      */
-    public function testEmptyList()
+    public function testEmptyList(): void
     {
         if (!$this->isRealJasminServer()) {
             $listStr = <<<STR
@@ -60,7 +60,7 @@ STR;
      *
      * @throws \JasminWeb\Exception\ConnectorException
      */
-    public function testNotEmptyListWithFakeData()
+    public function testNotEmptyListWithFakeData(): void
     {
         if (!$this->isRealJasminServer()) {
             $listStr = <<<STR
@@ -96,7 +96,7 @@ STR;
      *
      * @throws \JasminWeb\Exception\ConnectorException
      */
-    public function testAddConnector()
+    public function testAddConnector(): void
     {
         if (!$this->isRealJasminServer()) {
             $this->session->method('runCommand')->willReturn('Successfully added');
@@ -111,7 +111,7 @@ STR;
      *
      * @throws \JasminWeb\Exception\ConnectorException
      */
-    public function testConnectorsList()
+    public function testConnectorsList(): void
     {
         if (!$this->isRealJasminServer()) {
             $listStr = <<<STR
@@ -142,7 +142,7 @@ STR;
      *
      * @throws \JasminWeb\Exception\ConnectorException
      */
-    public function testStartConnector()
+    public function testStartConnector(): void
     {
         if (!$this->isRealJasminServer()) {
             $this->session->method('runCommand')->willReturn('Successfully');
@@ -156,7 +156,7 @@ STR;
      *
      * @throws \JasminWeb\Exception\ConnectorException
      */
-    public function testIsConnectorStarted()
+    public function testIsConnectorStarted(): void
     {
         if (!$this->isRealJasminServer()) {
             $listStr = <<<STR
@@ -180,7 +180,7 @@ STR;
      *
      * @throws \JasminWeb\Exception\ConnectorException
      */
-    public function testStopConnector()
+    public function testStopConnector(): void
     {
         if (!$this->isRealJasminServer()) {
             $this->session->method('runCommand')->willReturn('Successfully');
@@ -194,7 +194,7 @@ STR;
      *
      * @throws \JasminWeb\Exception\ConnectorException
      */
-    public function testIsConnectorStopped()
+    public function testIsConnectorStopped(): void
     {
         if (!$this->isRealJasminServer()) {
             $listStr = <<<STR
@@ -218,7 +218,7 @@ STR;
      *
      * @throws \JasminWeb\Exception\ConnectorException
      */
-    public function testRemoveConnector()
+    public function testRemoveConnector(): void
     {
         if (!$this->isRealJasminServer()) {
             $this->session->method('runCommand')->willReturn('Successfully');
