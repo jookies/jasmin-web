@@ -1,33 +1,31 @@
 <?php
 
-namespace JasminWeb\Test\Command;
+namespace JasminWeb\Test\Command\MoRouter;
 
-use JasminWeb\Jasmin\Command\MtRouter\MtRouter;
+use JasminWeb\Jasmin\Command\MoRouter\MoRouter;
 use JasminWeb\Test\BaseTest;
 
-class MtRouterCommandTest extends BaseTest
+class MoRouterCommandTest extends BaseTest
 {
     /**
-     * @var MtRouter
+     * @var MoRouter
      */
-    private $mtRouter;
+    private $moRouter;
 
     protected function setUp()
     {
-        if (!$this->mtRouter) {
-            $this->mtRouter = new MtRouter($this->getSession());
+        if (!$this->moRouter) {
+            $this->moRouter = new MoRouter($this->getSession());
         }
     }
 
     public function testListMoRouters()
     {
-        $list = $this->mtRouter->all();
+        $list = $this->moRouter->all();
         $this->assertNotEmpty($list);
         $row = array_shift($list);
         $this->assertArrayHasKey('order', $row);
         $this->assertInternalType('int', $row['order']);
-        $this->assertArrayHasKey('rate', $row);
-        $this->assertInternalType('float', $row['rate']);
         $this->assertArrayHasKey('type', $row);
         $this->assertArrayHasKey('connectors', $row);
         $this->assertInternalType('array', $row['connectors']);

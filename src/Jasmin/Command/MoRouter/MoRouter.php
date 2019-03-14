@@ -62,4 +62,9 @@ class MoRouter extends BaseCommand
 
         return $routers;
     }
+
+    protected function isHeavy(): bool
+    {
+        return true;
+    }
 }

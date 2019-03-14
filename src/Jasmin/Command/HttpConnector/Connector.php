@@ -12,7 +12,7 @@ class Connector extends BaseCommand
      */
     protected function getAddValidator(): AddValidator
     {
-        // TODO: Implement getAddValidator() method.
+        return new HttpConnectorAddValidator();
     }
 
     protected function getName(): string
@@ -52,5 +52,10 @@ class Connector extends BaseCommand
         }
 
         return $connectors;
+    }
+
+    protected function isHeavy(): bool
+    {
+        return true;
     }
 }
