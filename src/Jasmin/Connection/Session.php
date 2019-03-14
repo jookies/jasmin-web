@@ -32,9 +32,9 @@ class Session
             throw new \InvalidArgumentException('Not set username or password');
         }
 
-        $connection->write("$username\n");
-        $connection->write("$password\n");
-//        $connection->write(chr(0));
+        $connection->write("$username\r");
+        $connection->write("$password\r");
+        $connection->write(chr(0));
 
         $result = $connection->read();
         if (false !== strpos($result, 'Incorrect')) {
@@ -46,40 +46,30 @@ class Session
 
     /**
      * @param string $command
-     * @param bool $needWaitBeforeRead
      * @return bool|string
      *
      * @throws ConnectorException
      */
-    public function runCommand(string $command, bool $needWaitBeforeRead = false)
+    public function runCommand(string $command)
     {
         if (!$this->connection->isAlive()) {
             throw new ConnectorException('Try execute command without open socket');
         }
 
-        $command = trim($command) . "\n";
+        $command = trim($command) . "\r";
 
-        $this->connection->write($command);
+        $this->connection->write($command, false);
+        $this->connection->write( ' ');
 
-        if ($needWaitBeforeRead) {
-            $this->connection->wait();
-        }
-
-        return $this->normalize($this->connection->read(), strlen($command));
+        return $this->connection->read();
     }
 
-    protected function normalize(string $string, int $length): string
+    /**
+     * @return bool|string
+     * @throws ConnectorException
+     */
+    public function persist()
     {
-        return substr(str_replace('jcli :', '', trim($string)), $length);
-    }
-
-    public function persist(string $profile = 'jcli-prod')
-    {
-        $this->runCommand('persist ' . $profile);
-    }
-
-    public function load(string $profile = 'jcli-prod')
-    {
-        $this->runCommand('load ' . $profile);
+        return $this->runCommand('persist');
     }
 }
