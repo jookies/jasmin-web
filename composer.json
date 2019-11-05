@@ -1,7 +1,7 @@
 {
-  "name": "haegemon/jasmin-web",
+  "name": "lemuelpuglisi/jasminPHP",
   "version": "0.1",
-  "description": "Jasminsms web api for jcli connection.",
+  "description": "Jasmin SMS Gateway PHP APIs.",
   "minimum-stability": "stable",
   "license": "Apache-2.0",
   "authors": [
@@ -9,12 +9,17 @@
       "name": "Pawel Samysev",
       "email": "pawel.samysev@gmail.com",
       "role": "Developer"
+    }, 
+    {
+      "name": "Lemuel Puglisi",
+      "email": "lemuelpuglisi001@gmail.com",
+      "role": "Developer"
     }
   ],
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://github.com/haegemon/jasmin-web.git"
+      "url": "https://github.com/LemuelPuglisi/JasminPHP.git"
     }
   ],
   "require": {
@@ -25,8 +30,8 @@
   },
   "autoload": {
     "psr-4": {
-      "JasminWeb\\Jasmin\\" : "src/Jasmin/",
-      "JasminWeb\\Exception\\" : "src/Exception/"
+      "JasminPHP\\Jasmin\\" : "src/Jasmin/",
+      "JasminPHP\\Exception\\" : "src/Exception/"
     }
   }
 }
